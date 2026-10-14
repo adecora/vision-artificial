@@ -1,0 +1,30 @@
+[project]
+name = "miia-pec1"
+version = "0.1.0"
+description = "MIIA: Visión Artificial, PEC 1"
+readme = "README.md"
+authors = [{ name = "Alejandro de Cora", email = "alejandrodecora@gmail.com" }]
+requires-python = ">=3.12"
+dependencies = [
+    "matplotlib>=3.11.2",
+    "numpy>=2.5.4",
+    "opencv-python>=5.0.0.93",
+    "pandas>=3.0.6",
+    "pillow>=12.3.0",
+    "plotly>=7.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/adecora"
+Personal = "https://alejandrodecora.es"
+
+# https://docs.astral.sh/uv/concepts/projects/dependencies/#dependency-groups
+[dependency-groups]
+dev = [
+    "jupyter>=1.1.1",
+    "jupyterlab>=4.6.4",
+    "jupyterlab-quarto>=0.3.5",
+    "pytest>=9.1.1",
+    "shiny>=1.8.0",
+    "shinywidgets>=0.8.1",
+]

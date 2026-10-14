@@ -1,0 +1,54 @@
+project:
+  type: book
+  output-dir: httdocs
+  preview:
+    port: 4400
+    browser: true
+
+lang: es
+
+book:
+  title: "MIIA: Visión Artificial, PEC 1"
+  author: "Alejandro de Cora"
+  date: today
+  downloads: [pdf]
+  chapters:
+    - index.md
+
+
+bibliography: references.bib
+csl: https://www.zotero.org/styles/ieee
+
+execute:
+  warning: false
+  message: false
+
+format:
+  html:
+    theme:
+      light: [pandoc]
+      dark: [darkly]
+    # other-links:
+    #   - text: NASA Open Data
+    #     href: https://data.nasa.gov/
+    # code-links:
+    #   - text: Data Import Code
+    #     icon: file-code
+    #     href: data-import.py
+    toc: true
+    toc-depth: 3
+    code-fold: false
+    code-tools: false
+    number-sections: true
+  pdf:
+    documentclass: scrreprt
+    toc: true
+    number-sections: true
+    colorlinks: true
+    papersize: a4
+    geometry:
+      - margin=2.5cm
+    include-in-header:
+      text: |
+        \usepackage{fvextra}
+        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
