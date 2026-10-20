@@ -28,3 +28,11 @@ dev = [
     "shiny>=1.8.0",
     "shinywidgets>=0.8.1",
 ]
+
+[project.scripts]
+miia-pec1 = "miia_pec1.cli:main"
+
+
+[build-system]
+requires = ["uv_build >= 0.11.23, <0.12.0"]
+build-backend = "uv_build"

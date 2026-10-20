@@ -14,10 +14,12 @@ book:
   downloads: [pdf]
   chapters:
     - index.md
-
-
+    - 02-transformaciones.ipynb
+    - 03-calibracion.ipynb
+    - references.qmd
+    
 bibliography: references.bib
-csl: https://www.zotero.org/styles/ieee
+csl: https://www.zotero.org/styles/apa
 
 execute:
   warning: false
