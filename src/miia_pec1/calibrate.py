@@ -60,14 +60,16 @@ def capture(device, output_dir, rows, cols):
             img = frame.copy()
             gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
-            ret, corners = cv.findChessboardCorners(gray, (cols, rows), None)
-            if ret:
+            chessboard_found, corners = cv.findChessboardCorners(
+                gray, (cols, rows), None
+            )
+            if chessboard_found:
                 # Dibuja y muestra las esquinas detectadas
                 cv.drawChessboardCorners(img, (cols, rows), corners, ret)
 
             cv.putText(
                 img,
-                "Presiona 'c' para capturar, 'q' para salir",
+                "Presiona 'c' para capturar, 'ESC' para salir",
                 (10, h - 10),
                 FONT_FACE,
                 FONT_SIZE,
@@ -97,10 +99,11 @@ def capture(device, output_dir, rows, cols):
             cv.imshow("Captura de Imagen", img)
 
             key = cv.waitKey(1)
-            if key == ord("q"):
+            # La tecla 'Esc' termina la captura
+            if 0xFF & key == 27:
                 break
-            elif key == ord("c"):
-                if ret:
+            elif 0xFF & key == ord("c"):
+                if chessboard_found:
                     output_file = output_dir / f"capture_{idx:02}.jpg"
                     cv.imwrite(str(output_file), frame)
                     print(f"Imagen guardada en {output_file}")

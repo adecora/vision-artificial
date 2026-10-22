@@ -16,6 +16,7 @@ book:
     - index.md
     - 02-transformaciones.ipynb
     - 03-calibracion.ipynb
+    - 04-tracking.ipynb
     - references.qmd
     
 bibliography: references.bib

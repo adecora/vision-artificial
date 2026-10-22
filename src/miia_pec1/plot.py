@@ -1,6 +1,9 @@
 import cv2 as cv
 import matplotlib.pyplot as plt
+import numpy as np
 from matplotlib.patches import FancyArrowPatch, Polygon
+
+GREEN = (0, 255, 0)
 
 
 def plot_2D_transformations(x, x_t, *, ax=None, title=None, **kwargs):
@@ -126,3 +129,143 @@ def plot_arrow(ax, inicio, fin, *, lw=2, style="-|>", **kwargs):
             inicio, fin, mutation_scale=20, linewidth=lw, arrowstyle=style, **kwargs
         )
     )
+
+
+def draw_flow_hsv(flow):
+    """
+    Dibuja el flujo óptico en formato HSV.
+    El ángulo del flujo se codifica en el canal H y la magnitud en el canal V.
+
+    Parámetros:
+    ===========
+    flow: Flujo óptico calculado con OpenCV
+
+    Returns:
+    ========
+    Imagen en formato BGR que representa el flujo óptico
+    """
+    h, w = flow.shape[:2]
+    ch = 3
+    hsv = np.zeros((h, w, ch), dtype=np.uint8)
+    hsv[..., 1] = 255
+
+    mag, ang = cv.cartToPolar(flow[..., 0], flow[..., 1])
+    hsv[..., 0] = ang * 180 / np.pi / 2
+    hsv[..., 2] = cv.normalize(mag, None, 0, 255, cv.NORM_MINMAX)
+    brg = cv.cvtColor(hsv, cv.COLOR_HSV2BGR)
+    return brg
+
+
+def draw_flow(img, flow, *, step=16):
+    """
+    Dibuja el flujo óptico sobre la imagen original.
+
+    Parámetros:
+    ===========
+    img: Imagen original sobre la que se dibujará el flujo
+    flow: Flujo óptico calculado con OpenCV
+    step: Paso para muestrear el flujo (opcional)
+        Determina la densidad de las flechas que se dibujarán sobre la imagen
+
+    Returns:
+    ========
+    Imagen con el flujo óptico representado
+    """
+    h, w = img.shape[:2]
+
+    y, x = (
+        np.mgrid[step // 2 : h : step, step // 2 : w : step].reshape(2, -1).astype(int)
+    )
+    fx, fy = flow[y, x].T
+
+    lines = np.vstack([x, y, x + fx, y + fy]).T.reshape(-1, 2, 2)
+    lines = np.int32(lines + 0.5)
+
+    img = cv.polylines(img, lines, 0, GREEN)
+    for (x1, y1), (x2, y2) in lines:
+        img = cv.circle(img, (x1, y1), 1, GREEN, -1)
+
+    return img
+
+
+def draw_flow_warp(img, flow):
+    """
+    Aproxima el fotograma actual deformando el fotograma anterior
+    mediante el campo de flujo óptico.
+
+    Parámetros:
+    ===========
+    img: Fotograma anterior de la secuencia
+    flow: Flujo óptico calculado con OpenCV
+
+    Returns:
+    ========
+    Aproximación del fotograma actual obtenida mediante mapeo inverso del flujo óptico
+    """
+    h, w = img.shape[:2]
+
+    row_coords, col_coords = np.meshgrid(
+        np.arange(h, dtype=np.float32), np.arange(w, dtype=np.float32), indexing="ij"
+    )
+    u = flow[:, :, 0]
+    v = flow[:, :, 1]
+
+    # Aproximación al mapa inverso.
+    # Para cada píxel de destino, se estima de qué posición del fotograma anterior debe obtenerse su intensidad.
+    map_x = col_coords - u
+    map_y = row_coords - v
+    # Aproximación del fotograma actual
+    img_warp = cv.remap(img, map_x, map_y, cv.INTER_LINEAR)
+
+    return img_warp
+
+
+def draw_flow_registration(gray, old_gray, flow):
+    """
+    Dibuja el flujo óptico aplicado a la imagen gris y genera secuencias de imágenes para visualización.
+
+    Parámetros:
+    ===========
+    gray: Imagen gris actual
+    old_gray: Imagen gris anterior
+
+    Returns:
+    ========
+    seq_img: Superposición RGB de los fotogramas sin registrar
+    reg_img: Superposición RGB después de compensar el movimiento
+    target_img: Fotograma de referencia representado en RGB
+    """
+    h, w = gray.shape
+
+    row_coords, col_coords = np.meshgrid(
+        np.arange(h, dtype=np.float32), np.arange(w, dtype=np.float32), indexing="ij"
+    )
+    u = flow[:, :, 0]
+    v = flow[:, :, 1]
+
+    # Aproximación al mapa inverso.
+    # Para cada píxel de destino, se estima de qué posición del fotograma anterior debe obtenerse su intensidad.
+    map_x = col_coords + u
+    map_y = row_coords + v
+    # Aproximación del fotograma anterior
+    gray_warp = cv.remap(gray, map_x, map_y, cv.INTER_LINEAR)
+
+    # Superposición RGB de los fotogramas sin registrar
+    seq_img = np.zeros((h, w, 3), dtype=np.uint8)
+    seq_img[..., 0] = gray
+    seq_img[..., 1] = old_gray
+    seq_img[..., 2] = old_gray
+
+    # Superposición RGB después de compensar el movimiento
+    reg_img = np.zeros((h, w, 3), dtype=np.uint8)
+    reg_img[..., 0] = gray_warp
+    reg_img[..., 1] = old_gray
+    reg_img[..., 2] = old_gray
+
+    # Fotograma de referencia representado en RGB
+    target_img = np.zeros((h, w, 3), dtype=np.uint8)
+    target_img[..., 0] = old_gray
+    target_img[..., 1] = old_gray
+    target_img[..., 2] = old_gray
+
+    return seq_img, reg_img, target_img
