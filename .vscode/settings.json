@@ -1,5 +1,5 @@
 {
-    // No mas dolores de cabeza windows-linux
+  // No mas dolores de cabeza windows-linux
   "files.eol": "\n",
 
   // Configuración de Python
@@ -7,7 +7,7 @@
     // Espacios en lugar de tabs
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": false,
     "editor.codeActionsOnSave": {
       // "source.fixAll": "explicit",
       "source.organizeImports": "explicit"
@@ -19,22 +19,28 @@
   // Como el .env reescribe la variable PATH, no es recomendable usarlo para activar el entorno virtual, ya que puede causar problemas con la terminal integrada de VSCode.
   // "python.envFile": "${workspaceFolder}/.env",
   // "python.terminal.useEnvFile": true,
+  // Fuera las sugerencias que porcuelan de ty
+  "ty.inlayHints.variableTypes": false,
+  "ty.inlayHints.callArgumentNames": true,
+  // Si te despistas termina importando paquetes random
+  "ty.completions.autoImport": false,
+
+  // nice para no fumarse líneas inleíbles
+  "editor.rulers": [88, 120],
 
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
   "python.analysis.autoFormatStrings": true,
-  // Para que el linter y el autocompletado funcionen con el código dentro de spark_flights_etl
+  // Para que el linter y el autocompletado funcionen con el código dentro de la carpeta del proyecto
   "python.analysis.extraPaths": [ "${workspaceFolder}/src" ],
 
   // Configuración de Notebooks
   "notebook.defaultFormatter": "charliermarsh.ruff",
-  "notebook.formatOnSave.enabled": true,
-  "notebook.insertFinalNewline": true,
+  "notebook.formatOnSave.enabled": false,
+  "notebook.insertFinalNewline": false,
   "notebook.output.scrolling": true,
   "notebook.lineNumbers": "on",
   "notebook.scrolling.revealNextCellOnExecute": "none",
-  "notebook.codeActionsOnSave": {
-    "notebook.source.organizeImports": "explicit"
-  },
+  "notebook.source.organizeImports": "explicit",
   "notebook.editorOptionsCustomizations": {
     "editor.tabSize": 4,
     "editor.insertSpaces": true
@@ -68,6 +74,15 @@
     "**/_freeze": true,
     "**/__pycache__": true,
     "**/*_files": true,
-    "htdocs": true
+    "httdocs": true
+  },
+
+  // spell check para reducir mis coladas
+  "cSpell.enabled": true,
+  "cSpell.language": "en,es-ES",
+  "cSpell.enabledFileTypes": {
+    "*": true,
+    "markdown": true,
+    "python": true
   }
 }
