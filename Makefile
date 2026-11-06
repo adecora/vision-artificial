@@ -1,6 +1,7 @@
 QUARTO ?= quarto
 QUARTO_PYTHON ?= .venv/bin/python
 QUARTO_CMD = QUARTO_PYTHON=$(QUARTO_PYTHON) $(QUARTO)
+CURRENT_DIR := $(shell pwd)
 
 .PHONY: .uv
 .uv:
@@ -16,12 +17,12 @@ lint:
 	uvx ty check
 
 .PHONY: html
-html:
+html: pdf
 	$(QUARTO_CMD) render --to html
 
 .PHONY: pdf
 pdf:
-	$(QUARTO_CMD) render --no-clean --to pdf
+	$(QUARTO_CMD) render --to pdf --output-dir $(CURRENT_DIR)
 
 .PHONY: preview
 preview:
@@ -33,4 +34,4 @@ check:
 
 .PHONY: clean
 clean:
-	rm -rf httdocs .quarto _freeze
+	rm -rf docs .quarto _freeze

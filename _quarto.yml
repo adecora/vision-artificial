@@ -1,6 +1,6 @@
 project:
   type: book
-  output-dir: httdocs
+  output-dir: docs
   preview:
     port: 4400
     browser: true
@@ -17,10 +17,11 @@ book:
     - 02-transformaciones.ipynb
     - 03-calibracion.ipynb
     - 04-tracking.ipynb
+    - 05-segmentacion.ipynb
     - references.qmd
-    
+
 bibliography: references.bib
-csl: https://www.zotero.org/styles/apa
+csl: https://www.zotero.org/styles/ieee-access
 
 execute:
   warning: false
@@ -44,7 +45,9 @@ format:
     code-tools: false
     number-sections: true
   pdf:
+    output-file: MIIA_Visión_Artificial_PEC_1.pdf
     documentclass: scrreprt
+    titlepage: true
     toc: true
     number-sections: true
     colorlinks: true
@@ -53,5 +56,13 @@ format:
       - margin=2.5cm
     include-in-header:
       text: |
+        \usepackage{needspace}
+        \usepackage{graphicx}
+        % Logo de la UNED en la portada
+        \titlehead{%
+          \centering
+          \includegraphics[width=0.22\textwidth]{assets/logo-uned.jpg}
+          \par\vspace{2cm}
+        }
         \usepackage{fvextra}
         \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
