@@ -83,6 +83,6 @@
   "cSpell.enabledFileTypes": {
     "*": true,
     "markdown": true,
-    "python": true
+    "python": false
   }
 }
