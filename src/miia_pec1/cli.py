@@ -115,6 +115,19 @@ def main():
         help="Fichero donde se guarda el vídeo de seguimiento.",
     )
 
+    # Comando para lanzar el playground de procesamiento de imágenes
+    ui_parser = subparsers.add_parser(
+        "ui",
+        help="Lanzar el playground de procesamiento de imágenes.",
+    )
+    ui_parser.add_argument(
+        "-p",
+        "--port",
+        type=int,
+        default=5432,
+        help="Puerto en el que se lanzará el playground de procesamiento de imágenes."
+    )
+
     args = parser.parse_args()
     if not args.command:
         parser.print_help()
@@ -170,7 +183,13 @@ def main():
             mask_max=mask_max,
         )
         meanshift_tracking(args.device, roi_hist, track_window, outfile=args.outfile)
+    elif args.command == "ui":
+        from .ui.app import ASSETS_DIR, demo
 
+        try:
+            demo.launch(server_port=args.port, favicon_path=ASSETS_DIR / "favicon.ico")
+        except KeyboardInterrupt:
+            pass
     else:
         parser.print_help()
         raise SystemExit(1)

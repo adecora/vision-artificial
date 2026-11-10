@@ -13,6 +13,17 @@
             "console": "integratedTerminal",
             // Sólo debuggea mi código, no librerías externas
             "justMyCode": true
+        },
+        {
+            "name": "[Gradio]: Lanza la app de Gradio",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "src.miia_pec1.ui.app",
+            "args": [],
+            "python": "${workspaceFolder}/.venv/bin/python",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "justMyCode": true
         }
     ]
 }
