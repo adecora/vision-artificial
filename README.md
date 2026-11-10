@@ -1,3 +1,17 @@
+---
+title: Image Playground
+emoji: 💻
+colorFrom: gray
+colorTo: gray
+sdk: gradio
+sdk_version: 6.31.0
+python_version: '3.12'
+app_file: src/miia_pec1/ui/app.py
+pinned: false
+short_description: Playground para trastear con el preprocesamiento de imágenes
+---
+
+
 # MIIA: Visión Artificial, PEC 1
 
 <!-- Behind de la imagen más clásica de la visión por computador: https://en.wikipedia.org/wiki/Lenna -->
