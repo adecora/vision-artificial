@@ -6,7 +6,7 @@ colorTo: gray
 sdk: gradio
 sdk_version: 6.31.0
 python_version: '3.12'
-app_file: src/miia_pec1/ui/app.py
+app_file: app.py
 pinned: false
 short_description: Playground para trastear con el preprocesamiento de imágenes
 ---
