@@ -46,17 +46,16 @@ examples = [
 ]
 
 
-def modify_pipeline(action, state, op=None, idx=None, value=None):
+def modify_pipeline(action, state, op=None, idx=None):
     """
     Actualiza el estado del pipeline según la acción especificada (add, up, down, delete, clear)
 
     Parámetros:
     ===========
-    action: Acción a realizar ("add", "up", "down", "delete", "clear", "update")
+    action: Acción a realizar ("add", "up", "down", "delete", "clear")
     state: Estado actual del pipeline
     op: Operación a añadir o modificar
     idx: Índice de la operación a modificar o mover
-    value: Nuevos parámetros para la operación (solo para "update")
 
     Retorna:
     ===========
@@ -77,8 +76,6 @@ def modify_pipeline(action, state, op=None, idx=None, value=None):
     elif action == "delete":
         if idx is not None and 0 <= idx < len(new_state):
             new_state.pop(idx)
-    elif action == "update" and idx is not None and value is not None:
-        new_state[idx]["transform"].set_parameters(**value)
 
     return new_state
 
@@ -378,19 +375,16 @@ with gr.Blocks(title="MIIA-VA") as demo:
                                 else component.change
                                 for component in parameter_components
                             ]
+                            # loquenado, ya no se dispara pipeline.change,
+                            # para fumarse los re-render.
                             gr.on(
                                 triggers=parameter_triggers,
-                                fn=lambda state,
-                                *values,
-                                idx=idx,
-                                names=parameter_names: modify_pipeline(
-                                    "update",
-                                    state,
-                                    idx=idx,
-                                    value=dict(zip(names, values)),
-                                ),
-                                inputs=[pipeline, *parameter_components],
-                                outputs=[pipeline],
+                                fn=lambda *values, step=step, names=parameter_names: step[
+                                    "transform"
+                                ].set_parameters(**dict(zip(names, values))),
+                                inputs=parameter_components,
+                                outputs=[],
+                                show_progress="hidden",
                             )
 
     gr.Examples(
