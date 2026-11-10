@@ -328,6 +328,7 @@ with gr.Blocks(title="MIIA-VA") as demo:
                                     interactive=idx > 0,
                                     scale=0,
                                     min_width=50,
+                                    key=f"up-{step['id']}",
                                 )
                                 down = gr.Button(
                                     "↓",
@@ -335,12 +336,17 @@ with gr.Blocks(title="MIIA-VA") as demo:
                                     interactive=idx < len(state) - 1,
                                     scale=0,
                                     min_width=50,
+                                    key=f"down-{step['id']}",
                                 )
                                 delete = gr.Button(
-                                    "✕", size="sm", scale=0, min_width=50
+                                    "✕",
+                                    size="sm",
+                                    scale=0,
+                                    min_width=50,
+                                    key=f"delete-{step['id']}",
                                 )
 
-                            controls = transform.gradio_component
+                            controls = transform.gradio_component(key_prefix=step["id"])
 
                         up.click(
                             lambda state, idx=idx: modify_pipeline(

@@ -58,8 +58,7 @@ class ImageSmoothing(BaseConfig):
         if "sigma_x" in kwargs and self.uses_sigma:
             self.sigma_x = float(kwargs["sigma_x"])
 
-    @property
-    def gradio_component(self):
+    def gradio_component(self, key_prefix=None):
         controls = {
             "kernel_size": gr.Slider(
                 minimum=self.kernel.min_size,
@@ -68,6 +67,7 @@ class ImageSmoothing(BaseConfig):
                 value=self.kernel.size,
                 label="Kernel Size",
                 interactive=True,
+                key=f"{key_prefix}-kernel_size",
             )
         }
         if self.uses_sigma:
@@ -75,6 +75,7 @@ class ImageSmoothing(BaseConfig):
                 value=self.sigma_x,
                 label="Sigma X",
                 interactive=True,
+                key=f"{key_prefix}-sigma_x",
             )
         return controls
 
@@ -133,8 +134,7 @@ class Threshold(BaseConfig):
             ):
                 setattr(self, name, int(kwargs[name]))
 
-    @property
-    def gradio_component(self):
+    def gradio_component(self, key_prefix=None):
         controls = {}
         if self.uses_max_value:
             controls["max_value"] = gr.Slider(
@@ -144,6 +144,7 @@ class Threshold(BaseConfig):
                 value=self.max_value,
                 label="Valor máximo",
                 interactive=True,
+                key=f"{key_prefix}-max_value",
             )
         if not self.uses_otsu:
             controls = {
@@ -154,6 +155,7 @@ class Threshold(BaseConfig):
                     value=self.threshold,
                     label="Umbral",
                     interactive=True,
+                    key=f"{key_prefix}-threshold",
                 ),
                 **controls,
             }
@@ -221,8 +223,7 @@ class Morphology(BaseConfig):
         if "kernel_size" in kwargs:
             self.kernel.size = int(kwargs["kernel_size"])
 
-    @property
-    def gradio_component(self):
+    def gradio_component(self, key_prefix=None):
         return {
             "kernel_size": gr.Slider(
                 minimum=self.kernel.min_size,
@@ -231,6 +232,7 @@ class Morphology(BaseConfig):
                 value=self.kernel.size,
                 label="Tamaño del kernel",
                 interactive=True,
+                key=f"{key_prefix}-kernel_size",
             )
         }
 
@@ -272,6 +274,5 @@ class EqualizeHist(BaseConfig):
     def set_parameters(self, **kwargs):
         pass
 
-    @property
-    def gradio_component(self):
+    def gradio_component(self, key_prefix=None):
         return {}
