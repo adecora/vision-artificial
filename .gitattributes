@@ -9,3 +9,12 @@
 
 # docs/ se publica tal cual en GitHub Pages, que no resuelve punteros LFS
 docs/** -filter -diff -merge -text
+
+# assets/ se publica tal cual github
+assets/** -filter -diff -merge -text
+
+# out/ se publica tal cual en github
+out/** -filter -diff -merge -text
+
+# src/ se publica tal cual en github
+src/** -filter -diff -merge -text

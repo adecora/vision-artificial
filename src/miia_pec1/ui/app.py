@@ -3,8 +3,7 @@ from pathlib import Path
 
 import gradio as gr
 
-ASSETS_DIR = Path(__file__).parents[3] / "assets"
-DATA_DIR = Path(__file__).parents[3] / "data" / "DibujosNPT"
+ASSETS_DIR = Path(__file__).parent / "assets"
 
 from .tranformaciones import (
     BinaryInverseThreshold,
@@ -40,7 +39,7 @@ OPERATIONS = {
 }
 
 examples = [
-    f for f in DATA_DIR.rglob("N_*.png")
+    f for f in ASSETS_DIR.rglob("N_*.png")
     if f.name.startswith(("N_307", "N_328"))
 ]
 
