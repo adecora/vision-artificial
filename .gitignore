@@ -21,3 +21,6 @@ _freeze/
 
 # Gradio cache
 .gradio/
+
+# Notebooks de trasteo
+play*.ipynb

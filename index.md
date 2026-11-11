@@ -1,5 +1,5 @@
-# MIIA: Visión Artificial, PEC 1
+# MIIA: Visión Artificial, PEC 1 {.unnumbered}
 
-Prueba de evalución continua 1.
+Prueba de evaluación continua 1.
 
 El material fuente está escrito principalmente como notebooks y se renderiza con Quarto [@quarto].

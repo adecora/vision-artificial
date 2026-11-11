@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>5&nbsp; Segmentación sin conocimiento del dominio – MIIA: Visión Artificial, PEC 1</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./references.html" rel="next">
+<link href="./04-tracking.html" rel="prev">
+<link href="./assets/favicon.ico" rel="icon">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b626d73c4c936ccc3cb08be7d45d1df6.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-c574c73dd0d0ff61020859ffc61752ee.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-a64f2b92d8b4b45ab5f5d9261e8b8c9d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-c574c73dd0d0ff61020859ffc61752ee.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05-segmentacion.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Segmentación sin conocimiento del dominio</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">MIIA: Visión Artificial, PEC 1</a> 
+        <div class="sidebar-tools-main">
+    <a href="./MIIA_Visión_Artificial_PEC_1.pdf" title="Descargar PDF" class="quarto-navigation-tool px-1" aria-label="Descargar PDF"><i class="bi bi-file-pdf"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MIIA: Visión Artificial, PEC 1</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-playground-pipeline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Eliminación de ruido</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-transformaciones.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Transformaciones geométricas</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-calibracion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Calibración de la cámara</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-tracking.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Flujo óptico y seguimiento</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-segmentacion.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Segmentación sin conocimiento del dominio</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#umbralización" id="toc-umbralización" class="nav-link active" data-scroll-target="#umbralización"><span class="header-section-number">5.1</span> Umbralización</a>
+  <ul class="collapse">
+  <li><a href="#umbralización-global" id="toc-umbralización-global" class="nav-link" data-scroll-target="#umbralización-global"><span class="header-section-number">5.1.1</span> Umbralización global</a></li>
+  <li><a href="#umbralización-local" id="toc-umbralización-local" class="nav-link" data-scroll-target="#umbralización-local"><span class="header-section-number">5.1.2</span> Umbralización local</a></li>
+  </ul></li>
+  <li><a href="#k-means-clustering" id="toc-k-means-clustering" class="nav-link" data-scroll-target="#k-means-clustering"><span class="header-section-number">5.2</span> K-means clustering</a></li>
+  <li><a href="#segmetación-con-meanshift" id="toc-segmetación-con-meanshift" class="nav-link" data-scroll-target="#segmetación-con-meanshift"><span class="header-section-number">5.3</span> Segmetación con MeanShift</a></li>
+  <li><a href="#segmentación-watershed" id="toc-segmentación-watershed" class="nav-link" data-scroll-target="#segmentación-watershed"><span class="header-section-number">5.4</span> Segmentación Watershed</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Segmentación sin conocimiento del dominio</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="umbralización" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="umbralización"><span class="header-section-number">5.1</span> Umbralización</h2>
+<section id="umbralización-global" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="umbralización-global"><span class="header-section-number">5.1.1</span> Umbralización global</h3>
+<p>La umbralización global utiliza un único umbral para segmentar toda la imagen.</p>
+<p><span class="math display">\[
+dst(x,y)=
+\begin{cases}
+valor_x, &amp; \text{si } src(x,y)&gt;thresh \\
+valor_y, &amp; \text{si } src(x,y)\leq thresh
+\end{cases}
+\]</span></p>
+<p>Donde:</p>
+<ul>
+<li><span class="math inline">\(valor_x\)</span>: valor asignado cuando se supera el umbral.</li>
+<li><span class="math inline">\(valor_y\)</span>: valor asignado cuando no se supera el umbral.</li>
+</ul>
+<p>Los principales tipos de umbralización son:</p>
+<ul>
+<li><strong>Binaria:</strong> Asigna el valor <code>maxValue</code> si el valor del píxel el mayor que el umbral y 0 en caso contrario.</li>
+<li><strong>Binaria inversa:</strong> Invierte los valores asignados por la umbralización binaria.</li>
+<li><strong>Truncamiento:</strong> Asigna el valor umbral si el el valor del píxel es mayor que el umbral, de lo contrario asigna el valor original del píxel.</li>
+<li><strong>Puesta a cero:</strong> Conversa los valores mayores que el umbral y el resto las sustituye por 0.</li>
+<li><strong>Puesta a cero invertido:</strong> Conserva los valores menores o iguales al umbral y el resto los sustituye por 0.</li>
+</ul>
+<p>Los histogramas de la <a href="#fig-global-threshold-histogram" class="quarto-xref">Figura&nbsp;<span>5.1</span></a> permiten analizar cómo se modifica la distribución de intensidades con cada método. Mientras las umbralizaciones binarias concentran los píxeles en dos valores, los métodos de truncamiento y puesta a cero conservan parte de las intensidades originales.</p>
+<div id="cell-fig-global-threshold-histogram" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<div id="fig-global-threshold-histogram" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-global-threshold-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-global-threshold-histogram-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-global-threshold-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.1: Distribución de intensidades tras aplicar los distintos métodos de umbralización global
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>En la <a href="#fig-global-threshold" class="quarto-xref">Figura&nbsp;<span>5.2</span></a> se puede observar que los resultados son dependientes del contraste y la iluminación de cada imagen.</p>
+<div id="cell-fig-global-threshold" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-display">
+<div id="fig-global-threshold" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-global-threshold-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-global-threshold-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-global-threshold-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.2: Comparación de los métodos de umbralización global (umbral = 127)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="umbralización-local" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="umbralización-local"><span class="header-section-number">5.1.2</span> Umbralización local</h3>
+<p>La umbralización local, calcula un umbral <span class="math inline">\(T(x, y)\)</span> para cada píxel a partir de una ventana centrada en él.</p>
+<p>Dentro de las ventana OpenCV utiliza dos métodos para calcular el umbral:</p>
+<ul>
+<li><strong>Media:</strong> El umbral es la media del área vecina menos una constante <span class="math inline">\(C\)</span>.</li>
+<li><strong>Gaussiana:</strong> El umbral es una media ponderada gaussiana del área vecina menos una constante <span class="math inline">\(C\)</span>.</li>
+</ul>
+<p>En la <a href="#fig-local-vs-global-threshold" class="quarto-xref">Figura&nbsp;<span>5.3</span></a> se muestra como la umbralización local, permite recuperar una mayor cantidad de detalles que la umbralización global sobre imágenes que presentan variaciones en la iluminación, ya permite ajustar el umbral de cada zona, las zonas iluminadas tendrán un umbral alto mientras que las oscuras presentarán uno más bajo.</p>
+<div id="cell-fig-local-vs-global-threshold" class="cell">
+<div class="cell-output cell-output-display">
+<div id="fig-local-vs-global-threshold" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-local-vs-global-threshold-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-local-vs-global-threshold-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-local-vs-global-threshold-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.3: Umbralización global vs umbralización local
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>En la <a href="#fig-local-threshold-params" class="quarto-xref">Figura&nbsp;<span>5.4</span></a> se observa como al aumentar el valor de <span class="math inline">\(C\)</span> se reduce la presencia de píxeles negros aislados en el fondo, mientras que el valor de <code>blockSize</code> determina el tamaño de la la extensión que se utiliza para calcular el umbral.</p>
+<div id="cell-fig-local-threshold-params" class="cell">
+<div class="cell-output cell-output-display">
+<div id="fig-local-threshold-params" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-local-threshold-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-local-threshold-params-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-local-threshold-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.4: Ajuste de parámetros para la umbralización local
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Se analiza si es posible segmentar completamente el réctangulo de la imagen TH_noisy2.png o la pieza en forma de T de TH_TE.gif utilizando únicamente umbralazación local.</p>
+<p>Para analizar el efecto del tamaño de la ventana, sobre el resultado, se selecciona un recorte que contiene parte del rectángulo y del fondo.</p>
+<p>En la <a href="#fig-local-threshold-blocksize" class="quarto-xref">Figura&nbsp;<span>5.5</span></a>, se observa como una ventana más pequeña, produce una segementación más fragmentada, dado que el umbral se calcula a partir de una región reducida de píxeles vecinos que tienen intensidades similares al píxel central de la ventana. Al aumentar el tamaño de la ventana está incorpora píxeles de las dos regiones del recorte lo que favorece su diferenciación asemejando su comportamiento a una umbralización global.</p>
+<div id="fig-local-threshold-blocksize" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-local-threshold-blocksize-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-local-threshold-blocksize" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div id="fig-local-threshold-blocksize-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-local-threshold-blocksize-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-local-threshold-blocksize-output-1.png" class="img-fluid figure-img" data-ref-parent="fig-local-threshold-blocksize">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-local-threshold-blocksize-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Recorte de una región
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-local-threshold-blocksize" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div id="fig-local-threshold-blocksize-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-local-threshold-blocksize-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-local-threshold-blocksize-output-2.png" class="img-fluid figure-img" data-ref-parent="fig-local-threshold-blocksize">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-local-threshold-blocksize-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Umbralización con una ventana pequeña (blockSize=15)
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-local-threshold-blocksize" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div id="fig-local-threshold-blocksize-3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-local-threshold-blocksize-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-local-threshold-blocksize-output-3.png" class="img-fluid figure-img" data-ref-parent="fig-local-threshold-blocksize">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-local-threshold-blocksize-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c) Umbralización con una ventana grande (blockSize=81)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-local-threshold-blocksize-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.5: Análisis de la umbralización local en regiones homogéneas
+</figcaption>
+</figure>
+</div>
+<p>Como se muestra en las figuras <a href="#fig-local-rectangle" class="quarto-xref">Figura&nbsp;<span>5.6</span></a> y <a href="#fig-local-t" class="quarto-xref">Figura&nbsp;<span>5.7</span></a>, es posible obtener una segmentación bastante completa utilizando tamaños de ventana grandes, para que las ventanas incluyan píxeles del objeto que estamos buscando segmentar y del fondo.</p>
+<p>En el caso del rectángulo se obtiene un buen resultado con <code>blockSize=511</code> y <span class="math inline">\(C=10\)</span>, mientras que para la pieza en forma de T el mejor resultado se obtiene con <code>blockSize=501</code> y <span class="math inline">\(C=20\)</span>.</p>
+<p>Sin embargo, ninguna de las configuraciones consigue una segmentación completa y sin errores, habría que considerar otras técnicas.</p>
+<div class="cell" data-layout="[[1],[1,1]]" data-execution_count="11">
+<div id="fig-local-rectangle" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-local-rectangle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-local-rectangle" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-local-rectangle-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-local-rectangle-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-local-rectangle-output-1.png" class="img-fluid figure-img" data-ref-parent="fig-local-rectangle">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-local-rectangle-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Imagen original
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-local-rectangle" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-local-rectangle-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-local-rectangle-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-local-rectangle-output-2.png" class="img-fluid figure-img" data-ref-parent="fig-local-rectangle">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-local-rectangle-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Aplicación de umbralización local, usando la media
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-local-rectangle" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-local-rectangle-3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-local-rectangle-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-local-rectangle-output-3.png" class="img-fluid figure-img" data-ref-parent="fig-local-rectangle">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-local-rectangle-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c) Aplicación de umbralización local, usando la gausiana
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-local-rectangle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.6: Ajuste de parámetros para la umbralización local
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell" data-layout="[[1],[1,1]]" data-execution_count="12">
+<div id="fig-local-t" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-local-t-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-local-t" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-local-t-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-local-t-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-local-t-output-1.png" class="img-fluid figure-img" data-ref-parent="fig-local-t">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-local-t-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Imagen original
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-local-t" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-local-t-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-local-t-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-local-t-output-2.png" class="img-fluid figure-img" data-ref-parent="fig-local-t">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-local-t-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Aplicación de umbralización local, usando la media
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-local-t" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-local-t-3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-local-t-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-local-t-output-3.png" class="img-fluid figure-img" data-ref-parent="fig-local-t">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-local-t-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c) Aplicación de umbralización local, usando la gausiana
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-local-t-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.7: Ajuste de parámetros para la umbralización local
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+</section>
+<section id="k-means-clustering" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="k-means-clustering"><span class="header-section-number">5.2</span> K-means clustering</h2>
+<p>La imagen brain1.png corresponde a una resonancia magnética cerebral en escala de grises.</p>
+<p>La <a href="#fig-kmeans-original-histogram" class="quarto-xref">Figura&nbsp;<span>5.8</span></a> muestra la imagen original con su histograma de intensidades, se observa una concentración elevada en las intensidades bajas, asociadas a las regiones oscuras y al fondo de la imagen.</p>
+<p>se muestra el histograma de la imagen para ver como se reparte la intensidad de grises en la imagen.</p>
+<div id="fig-kmeans-original-histogram" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kmeans-original-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-kmeans-original-histogram" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-kmeans-original-histogram-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-kmeans-original-histogram-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-kmeans-original-histogram-output-1.png" class="img-fluid figure-img" data-ref-parent="fig-kmeans-original-histogram">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-kmeans-original-histogram-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Imagen original
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-kmeans-original-histogram" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-kmeans-original-histogram-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-kmeans-original-histogram-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-kmeans-original-histogram-output-2.png" class="img-fluid figure-img" data-ref-parent="fig-kmeans-original-histogram">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-kmeans-original-histogram-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Histograma de intensidades de la imagen original
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kmeans-original-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.8: Resonancia magnética cerebral
+</figcaption>
+</figure>
+</div>
+<p>La <a href="#fig-kmeans-histogram" class="quarto-xref">Figura&nbsp;<span>5.9</span></a> muestra los resultados de aplicar el K-means con diferente número de clústeres. Para cada configuración se muestra la imagen segmentada junto con el histograma de intensidades original, coloreado según los grupos obtenidos, las líneas verticales naranjas indican la posición de los centroides calculados por el algoritmo.</p>
+<p>Para valores reducidos de k, como k=2 y k=3, la segmentación permite diferenciar regiones más oscuras de las estructuras del cerebro, pero se pierde el detalle anatómico.</p>
+<p>Al aumentar el número de clusters k=5 y k=7, presenta una mayor variedad de intensidades intermedias y altas. Esto permite visualizar más estructuras del tejido cerebral.</p>
+<p>Para k=12 y k=15 se incorporan nuevos centroides que mejoran la representación de las transiciones entre niveles de gris permitiendo distinguir más detalles de la imagen.</p>
+<p>Los resultados muestran que aumentar el número de clústeres mejora la fidelidad de la imagen segmentada pero aumenta la complejidad de la imagen.</p>
+<div id="cell-fig-kmeans-histogram" class="cell">
+<div class="cell-output cell-output-display">
+<div id="fig-kmeans-histogram" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kmeans-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-kmeans-histogram-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kmeans-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.9: Segmentación mediante K-means para distintos números de clústeres
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="segmetación-con-meanshift" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="segmetación-con-meanshift"><span class="header-section-number">5.3</span> Segmetación con MeanShift</h2>
+<p>El algoritmo Mean Shift que nos permite suavizar una imagen conservando los bordes. OpenCV proporciona una implementación de este algoritmo, funciona desplazando de forma iterativa una ventana de búsqueda hacia regiones de mayor densidad en el espacio conjunto de espacio y color. Para ello, se consideran los píxeles que cumplen las siguientes condiciones:</p>
+<p><span class="math display">\[
+\left\{
+(x,y):
+\begin{aligned}
+X-\texttt{sp} &amp;\leq x \leq X+\texttt{sp},\\
+Y-\texttt{sp} &amp;\leq y \leq Y+\texttt{sp},\\
+\|(R,G,B)-(r,g,b)\|_2 &amp;\leq \texttt{sr}
+\end{aligned}
+\right\}
+\]</span></p>
+<p>Donde:</p>
+<ul>
+<li><strong>sp:</strong> representa el radio de la ventana espacial y determina la distancia máxima considerada entre píxeles vecinos.</li>
+<li><strong>sr:</strong> establece el radio de similitud cromática, limitando la diferencia de color entre los píxeles considerados.</li>
+<li><strong>(X,Y):</strong> corresponde a la posición central de la ventana de búsqueda.</li>
+<li><strong>(R,G,B):</strong> representa el color de referencia de la ventana.</li>
+</ul>
+<p>Mediante este proceso, los píxeles con características espaciales y cromáticas similares convergen hacia valores representativos próximos, dando lugar a regiones de color más uniforme.</p>
+<p>La <a href="#fig-meanshift-params" class="quarto-xref">Figura&nbsp;<span>5.10</span></a> presenta los resultados de aplicar Mean Shift con diferentes valores de los parámetros sp y sr, con el objetivo de analizar su influencia en el suavizado y la conservación de los detalles.</p>
+<p>En la <a href="#fig-meanshift-params-1" class="quarto-xref">Figura&nbsp;<span>5.10 (a)</span></a> se aumenta el radio espacial, manteniedo el mismo radio de color. Al aumentar el radio espacial, el algoritmo considera vecinos píxeles más alejados favoreciendo la formación de regiones homogéneas más grandes, se reducen detalles pero las estructuras principales permanecen reconocibles.</p>
+<p>En la <a href="#fig-meanshift-params-2" class="quarto-xref">Figura&nbsp;<span>5.10 (b)</span></a> mantiene el radio espacial y se incrementa el radio de color. El aumento del radio de color permite agrupar píxeles con diferencias de color mayores, lo que se traduce en un suavizado más intenso.</p>
+<div class="cell" data-layout-nrows="2" data-execution_count="17">
+<div id="fig-meanshift-params" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="17" data-layout-nrows="2">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-meanshift-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display">
+<div id="fig-meanshift-params-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-meanshift-params-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-meanshift-params-output-1.png" class="img-fluid figure-img" data-ref-parent="fig-meanshift-params">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-meanshift-params-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Variación del radio espcial
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-meanshift-params-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-meanshift-params-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-meanshift-params-output-2.png" class="img-fluid figure-img" data-ref-parent="fig-meanshift-params">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-meanshift-params-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) variación del radio de color
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-meanshift-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.10: Efecto de los parámetros en el filtrado Mean Shift
+</figcaption>
+</figure>
+</div>
+</div>
+<p>El parámetro maxLevel, establece el nivel máximo de una pirámide guassiana empleada durante el procesamiento en maxLevel+1.</p>
+<div id="fig-piramide" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-piramide-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="assets/piramide-gaussiana.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-piramide-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.11: Pirámide gaussiana. Fuente: Branch y Stewart (2018) <span class="citation" data-cites="branch2018gaussian"><a href="references.html#ref-branch2018gaussian" role="doc-biblioref">[1]</a></span>.
+</figcaption>
+</figure>
+</div>
+<p>En la <a href="#fig-meanshift-max-levels" class="quarto-xref">Figura&nbsp;<span>5.12</span></a> se comparan los resultados con distintos niveles de maxLevel. Las tres configuraciones mantienen las principales regiones de color y la estructura general de la escena, las diferencia aparecen principalmente en las zonas con variaciones locales de color y en delimitación de algunas regiones.</p>
+<div id="cell-fig-meanshift-max-levels" class="cell" data-execution_count="18">
+<div class="cell-output cell-output-display">
+<div id="fig-meanshift-max-levels" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-meanshift-max-levels-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-meanshift-max-levels-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-meanshift-max-levels-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.12: Resultado de pirámides gaussianas al aplicar mean shift
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="segmentación-watershed" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="segmentación-watershed"><span class="header-section-number">5.4</span> Segmentación Watershed</h2>
+<p>En la figura <a href="#fig-exercise-5-4-1" class="quarto-xref">Figura&nbsp;<span>5.13</span></a> se muestra la segmentación de los lóbulos cerebrales utilizando un umbral de Otsu sobre la imagen suavizada y enmascarada con una elipse que representa la región del cerebro.</p>
+<div id="cell-fig-exercise-5-4-1" class="cell" data-execution_count="360">
+<div class="cell-output cell-output-display">
+<div id="fig-exercise-5-4-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-exercise-5-4-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-exercise-5-4-1-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exercise-5-4-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.13: Segmentación de los lóbulos cerebrales
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>En la <a href="#fig-exercise-5-4-2-1" class="quarto-xref">Figura&nbsp;<span>5.14 (a)</span></a> se muestran las transformaciones de fondo seguro, primer plano seguro y región desconocida que se utilizan para construir la máscara de regiones segmentadas, <a href="#fig-exercise-5-4-2-2" class="quarto-xref">Figura&nbsp;<span>5.14 (b)</span></a>, que es utilizada como semilla por el algoritmo de watershed.</p>
+<div class="cell" data-layout-nrow="2">
+<div id="fig-exercise-5-4-2" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-exercise-5-4-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-5-4-2" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-exercise-5-4-2-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-exercise-5-4-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-exercise-5-4-2-output-1.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-5-4-2">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-5-4-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Fondo seguro, primer plano seguro y región desconocida
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-5-4-2" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-exercise-5-4-2-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-exercise-5-4-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-exercise-5-4-2-output-2.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-5-4-2">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-5-4-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Máscara de las regiones segmentadas
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exercise-5-4-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.14: Transformaciones intermedias
+</figcaption>
+</figure>
+</div>
+</div>
+<p>En la <a href="#fig-exercise-5-4-3" class="quarto-xref">Figura&nbsp;<span>5.15</span></a> se muestra el resultado de la aplicación del algoritmo watershed para la separación de los lóbulos.</p>
+<div id="cell-fig-exercise-5-4-3" class="cell quarto-layout-panel" data-layout-nrow="2" data-execution_count="373">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-exercise-5-4-3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-exercise-5-4-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="05-segmentacion_files/figure-html/fig-exercise-5-4-3-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exercise-5-4-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.15: Separación de los lóbulos con watershed
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-branch2018gaussian" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">N. Branch y E. C. Stewart, <span>«Applications of Phase-Based Motion Processing»</span>, 2018. Disponible en: <a href="https://www.researchgate.net/figure/Gaussian-Image-Pyramid_fig7_322310138">https://www.researchgate.net/figure/Gaussian-Image-Pyramid_fig7_322310138</a></div>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./04-tracking.html" class="pagination-link" aria-label="Flujo óptico y seguimiento">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Flujo óptico y seguimiento</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./references.html" class="pagination-link" aria-label="Referencias">
+        <span class="nav-page-text">Referencias</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

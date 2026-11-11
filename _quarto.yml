@@ -9,11 +9,14 @@ lang: es
 
 book:
   title: "MIIA: Visión Artificial, PEC 1"
+  output-file: MIIA_Visión_Artificial_PEC_1
+  favicon: assets/favicon.ico
   author: "Alejandro de Cora"
   date: today
   downloads: [pdf]
   chapters:
     - index.md
+    - 01-playground-pipeline.ipynb
     - 02-transformaciones.ipynb
     - 03-calibracion.ipynb
     - 04-tracking.ipynb
@@ -45,7 +48,6 @@ format:
     code-tools: false
     number-sections: true
   pdf:
-    output-file: MIIA_Visión_Artificial_PEC_1.pdf
     documentclass: scrreprt
     titlepage: true
     toc: true
@@ -64,5 +66,9 @@ format:
           \includegraphics[width=0.22\textwidth]{assets/logo-uned.jpg}
           \par\vspace{2cm}
         }
+        % Alinear arriba las figuras en páginas de flotantes
+        \makeatletter
+        \setlength{\@fptop}{0pt}
+        \makeatother
         \usepackage{fvextra}
         \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}

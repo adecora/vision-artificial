@@ -13,8 +13,8 @@ CRITERIA = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
 FONT_FACE = cv.FONT_HERSHEY_SIMPLEX
 FONT_SIZE = 0.5
 GREEN = (0, 255, 0)
-RED = (255, 0, 0)
-BLUE = (0, 0, 255)
+RED = (0, 0, 255)
+BLUE = (255, 0, 0)
 
 
 # Específico para mi configuración en Arch Linux
@@ -76,7 +76,7 @@ def capture(device, output_dir, rows, cols):
                 GREEN,
                 1,
             )
-            if ret:
+            if chessboard_found:
                 cv.putText(
                     img,
                     "Patrón detectado",
@@ -104,6 +104,7 @@ def capture(device, output_dir, rows, cols):
                 break
             elif 0xFF & key == ord("c"):
                 if chessboard_found:
+                    output_dir.mkdir(parents=True, exist_ok=True)
                     output_file = output_dir / f"capture_{idx:02}.jpg"
                     cv.imwrite(str(output_file), frame)
                     print(f"Imagen guardada en {output_file}")

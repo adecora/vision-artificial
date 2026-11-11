@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Transformaciones geométricas – MIIA: Visión Artificial, PEC 1</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./03-calibracion.html" rel="next">
+<link href="./01-playground-pipeline.html" rel="prev">
+<link href="./assets/favicon.ico" rel="icon">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b626d73c4c936ccc3cb08be7d45d1df6.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-c574c73dd0d0ff61020859ffc61752ee.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-a64f2b92d8b4b45ab5f5d9261e8b8c9d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-c574c73dd0d0ff61020859ffc61752ee.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./02-transformaciones.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Transformaciones geométricas</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">MIIA: Visión Artificial, PEC 1</a> 
+        <div class="sidebar-tools-main">
+    <a href="./MIIA_Visión_Artificial_PEC_1.pdf" title="Descargar PDF" class="quarto-navigation-tool px-1" aria-label="Descargar PDF"><i class="bi bi-file-pdf"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo oscuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">MIIA: Visión Artificial, PEC 1</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-playground-pipeline.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Eliminación de ruido</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-transformaciones.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Transformaciones geométricas</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-calibracion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Calibración de la cámara</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-tracking.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Flujo óptico y seguimiento</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-segmentacion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Segmentación sin conocimiento del dominio</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#ejercicio-2.1" id="toc-ejercicio-2.1" class="nav-link active" data-scroll-target="#ejercicio-2.1"><span class="header-section-number">2.1</span> Ejercicio 2.1</a></li>
+  <li><a href="#ejercicio-2.2" id="toc-ejercicio-2.2" class="nav-link" data-scroll-target="#ejercicio-2.2"><span class="header-section-number">2.2</span> Ejercicio 2.2</a>
+  <ul class="collapse">
+  <li><a href="#implementación-de-las-transformaciones-de-forma-individual" id="toc-implementación-de-las-transformaciones-de-forma-individual" class="nav-link" data-scroll-target="#implementación-de-las-transformaciones-de-forma-individual"><span class="header-section-number">2.2.1</span> Implementación de las transformaciones de forma individual</a></li>
+  <li><a href="#implementación-de-las-transformaciones-compuestas" id="toc-implementación-de-las-transformaciones-compuestas" class="nav-link" data-scroll-target="#implementación-de-las-transformaciones-compuestas"><span class="header-section-number">2.2.2</span> Implementación de las transformaciones compuestas</a></li>
+  <li><a href="#transformar-la-región-de-interés-roi" id="toc-transformar-la-región-de-interés-roi" class="nav-link" data-scroll-target="#transformar-la-región-de-interés-roi"><span class="header-section-number">2.2.3</span> Transformar la región de interés (ROI)</a></li>
+  </ul></li>
+  <li><a href="#ejercicio-2.3" id="toc-ejercicio-2.3" class="nav-link" data-scroll-target="#ejercicio-2.3"><span class="header-section-number">2.3</span> Ejercicio 2.3</a>
+  <ul class="collapse">
+  <li><a href="#deformación-de-una-imagen" id="toc-deformación-de-una-imagen" class="nav-link" data-scroll-target="#deformación-de-una-imagen"><span class="header-section-number">2.3.1</span> Deformación de una imagen</a></li>
+  <li><a href="#transformación-no-lineal" id="toc-transformación-no-lineal" class="nav-link" data-scroll-target="#transformación-no-lineal"><span class="header-section-number">2.3.2</span> Transformación no lineal</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Transformaciones geométricas</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="ejercicio-2.1" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="ejercicio-2.1"><span class="header-section-number">2.1</span> Ejercicio 2.1</h2>
+<p>Se puede rotar una imagen respecto al centro de la imagen, aplicando una transformación afín utilizando la función <code>cv2.getRotationMatrix2D()</code> <span class="citation" data-cites="opencv2026geometric"><a href="references.html#ref-opencv2026geometric" role="doc-biblioref">[1]</a></span>.</p>
+<p>La matriz de rotación de OpenCV <span class="citation" data-cites="opencv2026geometric"><a href="references.html#ref-opencv2026geometric" role="doc-biblioref">[1]</a></span> incorpora el centro de rotación y un factor de escala.</p>
+<p><span class="math display">\[
+M = \begin{bmatrix}
+\alpha &amp; \beta &amp; (1-\alpha)c_x-\beta c_y\\
+-\beta &amp; \alpha &amp; \beta c_x+(1-\alpha)c_y
+\end{bmatrix}
+\]</span></p>
+<p>donde</p>
+<p><span class="math display">\[
+\begin{aligned}
+\alpha &amp;= s\cos\theta\\
+\beta &amp;= s\sin\theta
+\end{aligned}
+\]</span></p>
+<p>Como se puede ver en <a href="#lst-rotation-matrix" class="quarto-xref">Listado&nbsp;<span>2.1</span></a> esta matriz es equivalente a realizar las siguientes transformaciones de forma encadenada:</p>
+<div class="cell" data-fig-width="6" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-rotacion" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rotacion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-rotacion">flowchart LR
+    T1["Trasladar el centro de la imagen al origen de coordenadas"]
+    R["Rotar la imagen"]
+    T2["Trasladar la imagen de vuelta a su posición original"]
+    
+     T1 --&gt; R
+     R --&gt; T2
+
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rotacion-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.1: Rotar una imagen respecto a su centro
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="7b8dccb7-c903-4f69-becf-56fbf65ff2ca" class="cell" data-execution_count="55">
+<div id="lst-rotation-matrix" class="python cell-code listing quarto-float quarto-figure quarto-figure-left anchored">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-rotation-matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Listado&nbsp;2.1: Composición de transformaciones afines
+</figcaption>
+<div aria-describedby="lst-rotation-matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Escogemos el centro de rotación</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>c_h, c_w <span class="op">=</span> <span class="dv">100</span>, <span class="dv">200</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Matriz de rotación con OpenCV</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>rot <span class="op">=</span> cv.getRotationMatrix2D((c_w, c_h), <span class="dv">30</span>, <span class="dv">1</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Rotación respecto (c_w, c_h) con transformaciones afines</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Trasladar el centro de la imagen al origen de coordenadas</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>T1 <span class="op">=</span> mtm.TRANSLATE(t_x<span class="op">=-</span>c_w, t_y<span class="op">=-</span>c_h)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Rotar la imagen respecto al origen de coordeandas</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>R <span class="op">=</span> mtm.ROTATE(<span class="dv">30</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Trasladar la imagen de vuelta al su posición original</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>T2 <span class="op">=</span> mtm.TRANSLATE(t_x<span class="op">=</span>c_w, t_y<span class="op">=</span>c_h)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Matriz de rotación calculada</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> T2 <span class="op">@</span> R <span class="op">@</span> T1</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'np.allclose(M[:2,:], rot) = </span><span class="sc">{</span>np<span class="sc">.</span>allclose(M[:<span class="dv">2</span>,:], rot)<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</figure>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>np.allclose(M[:2,:], rot) = True</code></pre>
+</div>
+</div>
+<p>Al rotar una imagen las dimensiones del marco de salida cambian, si no ajustamos las dimensiones al nuevo marco perdemos información de la imagen original.</p>
+<div id="fig-rotate-image" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rotate-image-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-rotate-image" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-rotate-image-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-rotate-image-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-rotate-image-output-1.png" class="img-fluid figure-img" data-ref-parent="fig-rotate-image">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-rotate-image-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Imagen original
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-rotate-image" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-rotate-image-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-rotate-image-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-rotate-image-output-2.png" class="img-fluid figure-img" data-ref-parent="fig-rotate-image">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-rotate-image-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Imagen rotada 45º en el frame orginal
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rotate-image-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.2: Rotación
+</figcaption>
+</figure>
+</div>
+<p>Para evitar la pérdida de información durante la rotación de una imagen, es necesario ajustar las dimensiones del marco de salida de modo que contenga completamente la imagen transformada <span class="citation" data-cites="rosebrock2017rotate"><a href="references.html#ref-rosebrock2017rotate" role="doc-biblioref">[2]</a></span>.</p>
+<p>Las nuevas dimensiones pueden calcularse a partir de las proyecciones horizontales y verticales de los lados de la imagen original, como se ilustra en <a href="#fig-proyect-dimensions" class="quarto-xref">Figura&nbsp;<span>2.3</span></a>.</p>
+<p>Una vez calculadas estas dimensiones, es necesario situar el centro de la imagen original en el centro del nuevo marco, evitando así que la imagen rotada quede recortada.</p>
+<div id="cell-fig-proyect-dimensions" class="cell" data-execution_count="57">
+<div class="cell-output cell-output-display">
+<div id="fig-proyect-dimensions" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-proyect-dimensions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-proyect-dimensions-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-proyect-dimensions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.3: Dimensiones proyectadas
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="fig-exercise-2-1" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-exercise-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-1" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-exercise-2-1-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-exercise-2-1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-1-output-1.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-2-1">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-2-1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Imagen zigzag
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-1" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-exercise-2-1-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-exercise-2-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-1-output-2.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-2-1">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-2-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Imagen brainLabels
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exercise-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.4: Escalado y rotación de imágenes con ajuste del marco de salida
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="ejercicio-2.2" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="ejercicio-2.2"><span class="header-section-number">2.2</span> Ejercicio 2.2</h2>
+<section id="implementación-de-las-transformaciones-de-forma-individual" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="implementación-de-las-transformaciones-de-forma-individual"><span class="header-section-number">2.2.1</span> Implementación de las transformaciones de forma individual</h3>
+<div class="cell" data-fig-width="6" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">---
+title: Rotar una imagen respecto a su centro
+---
+flowchart LR
+    T1["Reescalar 1/4 ambos ejes"]
+    T2["Shear -30ª sobre el eje X"]
+    T3["Giro 90º (sentido antihorario)"]
+    
+     T1 --&gt; T2
+     T2 --&gt; T3
+
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div id="fig-exercise-2-2-1-1" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-exercise-2-2-1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-2-1-1" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div id="fig-exercise-2-2-1-1-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-exercise-2-2-1-1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-2-1-1-output-1.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-2-2-1-1">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-2-2-1-1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Escalado uniforme (1/4)
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-2-1-1" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div id="fig-exercise-2-2-1-1-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-exercise-2-2-1-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-2-1-1-output-2.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-2-2-1-1">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-2-2-1-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Shear horizontal (-30º)
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-2-1-1" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div id="fig-exercise-2-2-1-1-3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-exercise-2-2-1-1-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-2-1-1-output-3.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-2-2-1-1">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-2-2-1-1-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c) Rotación antihoraria (90ª)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exercise-2-2-1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.5: Composición de transformaciones afines sobre una imagen
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="implementación-de-las-transformaciones-compuestas" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="implementación-de-las-transformaciones-compuestas"><span class="header-section-number">2.2.2</span> Implementación de las transformaciones compuestas</h3>
+<p>En la composición de transformaciones geométricas, el orden de las transformaciones afecta al resultado, ya que la multiplicación de matrices no es conmutativa <span class="citation" data-cites="wikipediaMatrix"><a href="references.html#ref-wikipediaMatrix" role="doc-biblioref">[3]</a></span>:</p>
+<p><span class="math display">\[
+\mathbf{A}\mathbf{B}\neq\mathbf{B}\mathbf{A}
+\]</span></p>
+<p>Por ejemplo, dadas las matrices:</p>
+<p><span class="math display">\[
+\mathbf{A} =
+\begin{bmatrix}
+1 &amp; 2\\
+3 &amp; 4
+\end{bmatrix},
+\qquad
+\mathbf{B} =
+\begin{bmatrix}
+0 &amp; 1\\
+0 &amp; 0
+\end{bmatrix}
+\]</span></p>
+<p>Se obtienen los siguientes productos:</p>
+<p><span class="math display">\[
+\mathbf{A}\mathbf{B} =
+\begin{bmatrix}
+0 &amp; 1\\
+0 &amp; 3
+\end{bmatrix},
+\qquad
+\mathbf{B}\mathbf{A} =
+\begin{bmatrix}
+3 &amp; 4\\
+0 &amp; 0
+\end{bmatrix}
+\]</span></p>
+<p>Sin embargo, la multiplicación de matrices sí cumple la propiedad asociativa, que permite agrupar varias transformaciones en una única matriz sin alterar el resultado.</p>
+<p>Para un punto representado mediante el vector columna <span class="math inline">\(\mathbf{x}\)</span>, si primero se aplica la transformación <span class="math inline">\(\mathbf{T}_1\)</span> y posteriormente <span class="math inline">\(\mathbf{T}_2\)</span>, se obtiene:</p>
+<p><span class="math display">\[
+\mathbf{x}' = \mathbf{T}_2(\mathbf{T}_1\mathbf{x}) = (\mathbf{T}_2\mathbf{T}_1)\mathbf{x} = \mathbf{T}_C\mathbf{x}
+\]</span></p>
+<p>donde <span class="math inline">\(\mathbf{T}_C=\mathbf{T}_2\mathbf{T}_1\)</span> representa la matriz de transformación compuesta.</p>
+<p>Como se muestra en <a href="#fig-matrix-composition" class="quarto-xref">Figura&nbsp;<span>2.6</span></a>, el orden de aplicación de las transformaciones afecta al resultado final. En el primer caso se aplica una traslación seguida de una rotación, mientras que en el segundo se invierte el orden, obteniéndose posiciones finales diferentes para un mismo punto inicial.</p>
+<div id="fig-matrix-composition" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-matrix-composition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-matrix-composition" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-matrix-composition-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-matrix-composition-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-matrix-composition-output-1.png" class="img-fluid figure-img" data-ref-parent="fig-matrix-composition">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-matrix-composition-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Traslación seguida de rotación
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-matrix-composition" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-matrix-composition-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-matrix-composition-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-matrix-composition-output-2.png" class="img-fluid figure-img" data-ref-parent="fig-matrix-composition">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-matrix-composition-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Rotación seguida de traslación
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-matrix-composition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.6: Efecto del orden de aplicación de las transformaciones geométricas
+</figcaption>
+</figure>
+</div>
+<p>El resultado de realizar las transformaciones mediante composición de matrices, se muestra en la <a href="#fig-exercise-2-2-1-2-1" class="quarto-xref">Figura&nbsp;<span>2.7 (a)</span></a>, geométricamente el resultado es el mismo. Sin embargo, si observamos el detalle de las intensidades de los píxeles resultantes, en la figura <a href="#fig-exercise-2-2-1-2-2" class="quarto-xref">Figura&nbsp;<span>2.7 (b)</span></a>, no son iguales. Cada transformación sobre la imagen realiza una interpolación, en las transformaciones individuales por tanto se están aplicando tres interpolaciones, por una en el caso de la transformación compuesta.</p>
+<div class="cell" data-layout="[40,60]" data-execution_count="61">
+<div id="fig-exercise-2-2-1-2" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-exercise-2-2-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-2-1-2" style="flex-basis: 40.0%;justify-content: flex-start;">
+<div id="fig-exercise-2-2-1-2-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-exercise-2-2-1-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-2-1-2-output-1.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-2-2-1-2">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-2-2-1-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Resultado de la transformación
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-2-1-2" style="flex-basis: 60.0%;justify-content: flex-start;">
+<div id="fig-exercise-2-2-1-2-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-exercise-2-2-1-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-2-1-2-output-2.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-2-2-1-2">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-2-2-1-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Detalle de las imágenes transformadas
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exercise-2-2-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.7: Aplicación de transformaciones afines mediante composición de matrices
+</figcaption>
+</figure>
+</div>
+</div>
+<p>Al realizar transformaciones geométricas de 2D sobre una imagen, las coordenadas de los píxeles de la imagen resultante no tienen por qué coincidir con las de la imagen original.</p>
+<p>Para determinar el valor de cada píxel de la imagen de destino, OpenCV utiliza un proceso de <strong>mapeo inverso</strong>, que consiste en recorrer los píxeles de la salida y calcular sus coordenadas correspondientes en la imagen de origen <span class="citation" data-cites="opencv2026imgproc"><a href="references.html#ref-opencv2026imgproc" role="doc-biblioref">[4]</a></span>.</p>
+<p><span class="math display">\[
+\operatorname{dst}(x,y) = \operatorname{src}\left(f_x(x,y),f_y(x,y)\right)
+\]</span></p>
+<p>donde <span class="math inline">\(f_x(x,y)\)</span> y <span class="math inline">\(f_y(x,y)\)</span> representan las coordenadas de la imagen original correspondientes al píxel <span class="math inline">\((x, y)\)</span> de la imagen destino.</p>
+<p>Estas coordenadas toman valores decimales y, por tanto, no tienen porque tener una correspondencia exacta con un la posición de un píxel de la imagen original. Para estimar la intensidad del píxel de la imagen de salida se aplican diferentes métodos de interpolación.</p>
+<p>La interpolación por el vecino más cercano consiste en asignar a cada píxel de destino el valor del píxel de origen cuya posición sea la más cercana a las coordenada calculadas <span class="citation" data-cites="wikipediaNearestNeighbor"><a href="references.html#ref-wikipediaNearestNeighbor" role="doc-biblioref">[5]</a></span>. Como se muestra en <a href="#fig-interpolation-2D-nearest-neighbor" class="quarto-xref">Figura&nbsp;<span>2.8</span></a>, el valor del punto interpolado se obtiene directamente del píxel más cercano.</p>
+<div id="fig-interpolation-2D-nearest-neighbor" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-interpolation-2D-nearest-neighbor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/00c69077-9130-412d-9174-1493d81c948e-1-a26e5322-201e-424d-9f18-84db34630ae2.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-interpolation-2D-nearest-neighbor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.8: Interpolación 2D del vecino más cercano
+</figcaption>
+</figure>
+</div>
+<p>Este método de interpolación es computacionalmente poco costoso, no tiene que realizar promedios entre píxeles cercanos, y especialmente útil cuando es importante conservar los valores orginales de los píxeles, por ejemplo si vamos a aplicar máscaras de segmentación es pasos posteriores.</p>
+</section>
+<section id="transformar-la-región-de-interés-roi" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="transformar-la-región-de-interés-roi"><span class="header-section-number">2.2.3</span> Transformar la región de interés (ROI)</h3>
+<p>Para transformar la <strong>región de interés (ROI)</strong> hasta la posición objetivo, primero es necesario determinar las coordenadas de sus vértices en la imagen original.</p>
+<p>Como se muestra en <a href="#fig-exercise-2-2-2-1" class="quarto-xref">Figura&nbsp;<span>2.9</span></a>, estas coordenadas pueden calcularse a partir de las dimensiones de la región, su orientación y las proyecciones de sus lados sobre los ejes de coordenadas.</p>
+<div id="cell-fig-exercise-2-2-2-1" class="cell" data-execution_count="62">
+<div class="cell-output cell-output-display">
+<div id="fig-exercise-2-2-2-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-exercise-2-2-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-2-2-1-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exercise-2-2-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.9: Determinación de las coordenadas de los vértices de la región de interes
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Tras determinar las coordenadas de los vertices de la región de interés, se propone una secuencia de transformaciones geométricas para situarla en la posición objetivo.</p>
+<p>Como se ilustra en <a href="#fig-exercise-2-2-2-2" class="quarto-xref">Figura&nbsp;<span>2.10</span></a>, el procedimiento consta de tres operaciones: primero se aplica una rotación de 30º en sentido antihorario para alinear la región con los ejes de coordenadas, luego se realiza una traslación para situar el vertice superior izquierdo en el origen y finalmente se aplica un escalado uniforme para reducir sus dimensiones a la mitad.</p>
+<div class="cell" data-fig-width="6" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">---
+title: Secuencia de transformaciones geométricas
+---
+flowchart LR
+    T1["Rotación de 30°"]
+    T2["Traslación al origen"]
+    T3["Escalado uniforme (0,5)"]
+
+    T1 --&gt; T2 --&gt; T3
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div id="fig-exercise-2-2-2-2" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-exercise-2-2-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-2-2-2" style="flex-basis: 25.0%;justify-content: flex-start;">
+<div id="fig-exercise-2-2-2-2-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-exercise-2-2-2-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-2-2-2-output-1.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-2-2-2-2">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-2-2-2-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Posición original del ROI
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-2-2-2" style="flex-basis: 25.0%;justify-content: flex-start;">
+<div id="fig-exercise-2-2-2-2-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-exercise-2-2-2-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-2-2-2-output-2.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-2-2-2-2">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-2-2-2-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Rotación
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-2-2-2" style="flex-basis: 25.0%;justify-content: flex-start;">
+<div id="fig-exercise-2-2-2-2-3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-exercise-2-2-2-2-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-2-2-2-output-3.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-2-2-2-2">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-2-2-2-2-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c) Traslación del vertice superior al origen de coordenadas
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-2-2-2" style="flex-basis: 25.0%;justify-content: flex-start;">
+<div id="fig-exercise-2-2-2-2-4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-exercise-2-2-2-2-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-2-2-2-output-4.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-2-2-2-2">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-2-2-2-2-4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(d) Escalado de la imagen
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exercise-2-2-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.10: Secuencia de transformaciones para recolocar la región de interés
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="ejercicio-2.3" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="ejercicio-2.3"><span class="header-section-number">2.3</span> Ejercicio 2.3</h2>
+<section id="deformación-de-una-imagen" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="deformación-de-una-imagen"><span class="header-section-number">2.3.1</span> Deformación de una imagen</h3>
+<p>La deformación de la imagen se realiza mediante una transformación lineal por tramos, en la que se aplica un factor de escala horizontal diferente a cada mitad de la imagen, tal como se define en <a href="#eq-transformacion-tramos" class="quarto-xref">Ecuación&nbsp;<span>2.1</span></a>.</p>
+<p><span id="eq-transformacion-tramos"><span class="math display">\[
+\begin{aligned}
+x' &amp;=
+\begin{cases}
+\frac{2}{3}x, &amp; x \leq W/2 \\[6pt]
+\frac{W}{3} + \frac{4}{3}(x-W/2), &amp; x &gt; W/2
+\end{cases}
+\\[12pt]
+y' &amp;= y
+\end{aligned}
+\tag{2.1}\]</span></span></p>
+<p>Como se observa en <a href="#fig-exercise-2-3-1" class="quarto-xref">Figura&nbsp;<span>2.11</span></a>, la transformación modifica únicamente las coordenadas horizontales, manteniendo las verticales sin cambios:</p>
+<ul>
+<li>Mitad izquierda: se aplica un factor de escala de <span class="math inline">\(2/3\)</span>, comprimiendo su anchura original de <span class="math inline">\(W/2\)</span> a <span class="math inline">\(W/3\)</span>.</li>
+<li>Mitad derecha: se aplica un factor de escala de <span class="math inline">\(4/3\)</span>, expandiendo su anchura original de <span class="math inline">\(W/2\)</span> a <span class="math inline">\(2W/3\)</span>.</li>
+</ul>
+<p>Finalmente, ambas regiones se combinan para obtener la imagen transformada, conservando la anchura total original <span class="math inline">\(W\)</span> y manteniendo la continuidad en el punto de unión entre las dos mitades.</p>
+<div class="cell" data-layout="[[1,1],[0.7]]" data-layout-valign="center" data-execution_count="64">
+<div id="fig-exercise-2-3-1" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-exercise-2-3-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-3-1" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-exercise-2-3-1-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-exercise-2-3-1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-3-1-output-1.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-2-3-1">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-2-3-1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Mitad izquierda: escala 2/3
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-3-1" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-exercise-2-3-1-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-exercise-2-3-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-3-1-output-2.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-2-3-1">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-2-3-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Mitad derecha: escala 4/3
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-center">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-3-1" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="fig-exercise-2-3-1-3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-exercise-2-3-1-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-3-1-output-3.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-2-3-1">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-2-3-1-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c) Imagen resultante
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exercise-2-3-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.11: Deformación horizontal mediante una transformación lineal por tramos
+</figcaption>
+</figure>
+</div>
+</div>
+</section>
+<section id="transformación-no-lineal" class="level3" data-number="2.3.2">
+<h3 data-number="2.3.2" class="anchored" data-anchor-id="transformación-no-lineal"><span class="header-section-number">2.3.2</span> Transformación no lineal</h3>
+<div class="columns" data-layout-valign="center">
+<div class="column" style="width:55%;">
+<p>Se considera la siguiente transformación geométrica:</p>
+<p><span id="eq-transformacion-no-lineal"><span class="math display">\[
+\begin{aligned}
+y' &amp;= y + 0.4(x - 0.5)^2 - 0.1 \\
+x' &amp;= 2x
+\end{aligned}
+\tag{2.2}\]</span></span></p>
+<p>La transformación <a href="#eq-transformacion-no-lineal" class="quarto-xref">Ecuación&nbsp;<span>2.2</span></a> es <strong>no-lineal</strong>, debido a la dependecia cuadrada de la coordenada <span class="math inline">\(x\)</span>, a diferencia de las trasnformaciones afines esta transformación no conserva las líneas rectas, como se observa en la figura <a href="#fig-transformacion-no-lineal" class="quarto-xref">Figura&nbsp;<span>2.12</span></a>.</p>
+</div><div class="column" style="width:45%;">
+<div id="fig-transformacion-no-lineal" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-transformacion-no-lineal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="assets/transformacion-no-lineal.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-transformacion-no-lineal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.12: Transformación no lineal
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Aplicamos la tranformación <a href="#eq-transformacion-no-lineal" class="quarto-xref">Ecuación&nbsp;<span>2.2</span></a> a la imagen siguiendo la secuencia:</p>
+<div class="cell" data-fig-width="6" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">---
+title: Secuencia de transformaciones no lineales
+---
+flowchart LR
+    T1["Marco con los píxeles de destino"]
+    T2["(x',y')"]
+    T3["(x,y)"]
+    T4["Píxeles de origen"]
+
+    T1 -- "Normalizar" --&gt; T2
+    T2 -- "Transformación inversa" --&gt; T3
+    T3 -- "Desnormalizar" --&gt; T4
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<div id="cell-fig-exercise-2-3-2" class="cell" data-execution_count="66">
+<div class="cell-output cell-output-display">
+<div id="fig-exercise-2-3-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-exercise-2-3-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-3-2-output-1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exercise-2-3-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.13: Transformación no lineal del tablero de ajedrez
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+
+
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-opencv2026geometric" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">OpenCV, <span>«Geometric Transformations of Images»</span>. Accedido: 16 de octubre de 2026. [En línea]. Disponible en: <a href="https://docs.opencv.org/5.0/py_tutorials/py_imgproc/py_geometric_transformations/py_geometric_transformations.html#rotation">https://docs.opencv.org/5.0/py_tutorials/py_imgproc/py_geometric_transformations/py_geometric_transformations.html#rotation</a></div>
+</div>
+<div id="ref-rosebrock2017rotate" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">A. Rosebrock, <span>«Rotate Images (Correctly) with OpenCV and Python»</span>. Accedido: 15 de octubre de 2026. [En línea]. Disponible en: <a href="https://pyimagesearch.com/2017/01/02/rotate-images-correctly-with-opencv-and-python/">https://pyimagesearch.com/2017/01/02/rotate-images-correctly-with-opencv-and-python/</a></div>
+</div>
+<div id="ref-wikipediaMatrix" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">Wikipedia contributors, <span>«Matrix (mathematics)»</span>. Accedido: 17 de octubre de 2026. [En línea]. Disponible en: <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)">https://en.wikipedia.org/wiki/Matrix_(mathematics)</a></div>
+</div>
+<div id="ref-opencv2026imgproc" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">OpenCV, <span>«Geometric Image Transformations»</span>. Accedido: 17 de octubre de 2026. [En línea]. Disponible en: <a href="https://docs.opencv.org/5.0/main_modules/imgproc_transform.html">https://docs.opencv.org/5.0/main_modules/imgproc_transform.html</a></div>
+</div>
+<div id="ref-wikipediaNearestNeighbor" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">Wikipedia contributors, <span>«Nearest-neighbor interpolation»</span>. Accedido: 17 de octubre de 2026. [En línea]. Disponible en: <a href="https://en.wikipedia.org/wiki/Nearest-neighbor_interpolation">https://en.wikipedia.org/wiki/Nearest-neighbor_interpolation</a></div>
+</div>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./01-playground-pipeline.html" class="pagination-link" aria-label="Eliminación de ruido">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Eliminación de ruido</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./03-calibracion.html" class="pagination-link" aria-label="Calibración de la cámara">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Calibración de la cámara</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
