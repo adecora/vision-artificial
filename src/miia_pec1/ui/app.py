@@ -1,7 +1,6 @@
 import copy
 from pathlib import Path
 
-import cv2 as cv
 import gradio as gr
 
 ASSETS_DIR = Path(__file__).parents[3] / "assets"
@@ -80,38 +79,13 @@ def modify_pipeline(action, state, op=None, idx=None):
     return new_state
 
 
-def preview_roi(image, enabled, hist_enabled, xmin, xmax, ymin, ymax):
-    """
-    Previsualiza la región de interés (ROI) en una imagen.
-
-    Parámetros:
-    ===========
-    image: Imagen de entrada
-    enabled: Booleano que indica si la ROI está activada
-    hist_enabled: Booleano que indica si el histograma está activado
-    xmin: Porcentaje mínimo en X
-    xmax: Porcentaje máximo en X
-    ymin: Porcentaje mínimo en Y
-    ymax: Porcentaje máximo en Y
-    Retorna:
-    ===========
-    numpy.ndarray: Imagen con la ROI resaltada o None si no se debe mostrar
-    """
-    if image is None:
-        return None, None
-    if not enabled:
-        return image.copy(), None
+def update_roi_histogram(image, enabled, hist_enabled, xmin, xmax, ymin, ymax):
+    if image is None or not enabled or not hist_enabled:
+        return None
     bounds = roi_bounds(image, xmin, xmax, ymin, ymax)
     if bounds is None:
-        return image.copy(), None
-    x0, y0, x1, y1 = bounds
-    preview = image.copy()
-    color = (255, 0, 0) if preview.ndim == 3 else 255
-    cv.rectangle(preview, (x0, y0), (x1 - 1, y1 - 1), color, 2)
-
-    if hist_enabled:
-        return preview, plot_histogram(crop_roi(image, xmin, xmax, ymin, ymax))
-    return preview, None
+        return None
+    return plot_histogram(crop_roi(image, xmin, xmax, ymin, ymax))
 
 
 def store_uploaded_image(image, roi_enabled, hist_enabled, xmin, xmax, ymin, ymax):
@@ -132,18 +106,18 @@ def store_uploaded_image(image, roi_enabled, hist_enabled, xmin, xmax, ymin, yma
     ===========
     tuple: Imagen original, vista previa, histograma de entrada, histograma de ROI
     """
-    preview, roi_histogram = preview_roi(
+    roi_histogram = update_roi_histogram(
         image, roi_enabled, hist_enabled, xmin, xmax, ymin, ymax
     )
     input_histogram = plot_histogram(image) if hist_enabled else None
-    return image, preview, input_histogram, roi_histogram
+    return image, input_histogram, roi_histogram
 
 
 def clear_uploaded_image():
     """
     Limpia la imagen subida y todos los estados relacionados.
     """
-    return None, None, None, None, None, None, None, None
+    return None, None, None, None, None, None, None
 
 
 def update_output_histogram(images, enabled):
@@ -419,14 +393,13 @@ with gr.Blocks(title="MIIA-VA") as demo:
     input_image.change(
         store_uploaded_image,
         inputs=[input_image, roi_check, hist_check, xmin, xmax, ymin, ymax],
-        outputs=[source_image, input_image, input_histogram, roi_histogram],
+        outputs=[source_image, input_histogram, roi_histogram],
         show_progress="hidden",
     )
     input_image.clear(
         clear_uploaded_image,
         outputs=[
             source_image,
-            input_image,
             output_image,
             input_histogram,
             roi_histogram,
@@ -447,9 +420,9 @@ with gr.Blocks(title="MIIA-VA") as demo:
     )
     for trigger in preview_triggers:
         trigger(
-            preview_roi,
+            update_roi_histogram,
             inputs=[source_image, roi_check, hist_check, xmin, xmax, ymin, ymax],
-            outputs=[input_image, roi_histogram],
+            outputs=[roi_histogram],
             show_progress="hidden",
         )
 
