@@ -22,7 +22,7 @@ html: pdf
 
 .PHONY: pdf
 pdf:
-	$(QUARTO_CMD) render --to pdf --output-dir $(CURRENT_DIR)
+	$(QUARTO_CMD) render --to pdf --clean --output-dir $(CURRENT_DIR)
 
 .PHONY: preview
 preview:

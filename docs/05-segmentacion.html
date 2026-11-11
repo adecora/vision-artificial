@@ -445,7 +445,7 @@ valor_y, &amp; \text{si } src(x,y)\leq thresh
 <li><strong>Puesta a cero invertido:</strong> Conserva los valores menores o iguales al umbral y el resto los sustituye por 0.</li>
 </ul>
 <p>Los histogramas de la <a href="#fig-global-threshold-histogram" class="quarto-xref">Figura&nbsp;<span>5.1</span></a> permiten analizar cómo se modifica la distribución de intensidades con cada método. Mientras las umbralizaciones binarias concentran los píxeles en dos valores, los métodos de truncamiento y puesta a cero conservan parte de las intensidades originales.</p>
-<div id="cell-fig-global-threshold-histogram" class="cell" data-execution_count="5">
+<div id="cell-fig-global-threshold-histogram" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div id="fig-global-threshold-histogram" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -460,7 +460,7 @@ Figura&nbsp;5.1: Distribución de intensidades tras aplicar los distintos métod
 </div>
 </div>
 <p>En la <a href="#fig-global-threshold" class="quarto-xref">Figura&nbsp;<span>5.2</span></a> se puede observar que los resultados son dependientes del contraste y la iluminación de cada imagen.</p>
-<div id="cell-fig-global-threshold" class="cell" data-execution_count="6">
+<div id="cell-fig-global-threshold" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div id="fig-global-threshold" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -484,7 +484,7 @@ Figura&nbsp;5.2: Comparación de los métodos de umbralización global (umbral =
 <li><strong>Gaussiana:</strong> El umbral es una media ponderada gaussiana del área vecina menos una constante <span class="math inline">\(C\)</span>.</li>
 </ul>
 <p>En la <a href="#fig-local-vs-global-threshold" class="quarto-xref">Figura&nbsp;<span>5.3</span></a> se muestra como la umbralización local, permite recuperar una mayor cantidad de detalles que la umbralización global sobre imágenes que presentan variaciones en la iluminación, ya permite ajustar el umbral de cada zona, las zonas iluminadas tendrán un umbral alto mientras que las oscuras presentarán uno más bajo.</p>
-<div id="cell-fig-local-vs-global-threshold" class="cell">
+<div id="cell-fig-local-vs-global-threshold" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div id="fig-local-vs-global-threshold" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -499,7 +499,7 @@ Figura&nbsp;5.3: Umbralización global vs umbralización local
 </div>
 </div>
 <p>En la <a href="#fig-local-threshold-params" class="quarto-xref">Figura&nbsp;<span>5.4</span></a> se observa como al aumentar el valor de <span class="math inline">\(C\)</span> se reduce la presencia de píxeles negros aislados en el fondo, mientras que el valor de <code>blockSize</code> determina el tamaño de la la extensión que se utiliza para calcular el umbral.</p>
-<div id="cell-fig-local-threshold-params" class="cell">
+<div id="cell-fig-local-threshold-params" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display">
 <div id="fig-local-threshold-params" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -513,9 +513,9 @@ Figura&nbsp;5.4: Ajuste de parámetros para la umbralización local
 </div>
 </div>
 </div>
-<p>Se analiza si es posible segmentar completamente el réctangulo de la imagen TH_noisy2.png o la pieza en forma de T de TH_TE.gif utilizando únicamente umbralazación local.</p>
+<p>Se analiza si es posible segmentar completamente el rectángulo de la imagen TH_noisy2.png o la pieza en forma de T de TH_TE.gif utilizando únicamente umbralización local.</p>
 <p>Para analizar el efecto del tamaño de la ventana, sobre el resultado, se selecciona un recorte que contiene parte del rectángulo y del fondo.</p>
-<p>En la <a href="#fig-local-threshold-blocksize" class="quarto-xref">Figura&nbsp;<span>5.5</span></a>, se observa como una ventana más pequeña, produce una segementación más fragmentada, dado que el umbral se calcula a partir de una región reducida de píxeles vecinos que tienen intensidades similares al píxel central de la ventana. Al aumentar el tamaño de la ventana está incorpora píxeles de las dos regiones del recorte lo que favorece su diferenciación asemejando su comportamiento a una umbralización global.</p>
+<p>En la <a href="#fig-local-threshold-blocksize" class="quarto-xref">Figura&nbsp;<span>5.5</span></a>, se observa como una ventana más pequeña, produce una segmentación más fragmentada, dado que el umbral se calcula a partir de una región reducida de píxeles vecinos que tienen intensidades similares al píxel central de la ventana. Al aumentar el tamaño de la ventana está incorpora píxeles de las dos regiones del recorte lo que favorece su diferenciación asemejando su comportamiento a una umbralización global.</p>
 <div id="fig-local-threshold-blocksize" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-local-threshold-blocksize-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -566,7 +566,7 @@ Figura&nbsp;5.5: Análisis de la umbralización local en regiones homogéneas
 <p>Como se muestra en las figuras <a href="#fig-local-rectangle" class="quarto-xref">Figura&nbsp;<span>5.6</span></a> y <a href="#fig-local-t" class="quarto-xref">Figura&nbsp;<span>5.7</span></a>, es posible obtener una segmentación bastante completa utilizando tamaños de ventana grandes, para que las ventanas incluyan píxeles del objeto que estamos buscando segmentar y del fondo.</p>
 <p>En el caso del rectángulo se obtiene un buen resultado con <code>blockSize=511</code> y <span class="math inline">\(C=10\)</span>, mientras que para la pieza en forma de T el mejor resultado se obtiene con <code>blockSize=501</code> y <span class="math inline">\(C=20\)</span>.</p>
 <p>Sin embargo, ninguna de las configuraciones consigue una segmentación completa y sin errores, habría que considerar otras técnicas.</p>
-<div class="cell" data-layout="[[1],[1,1]]" data-execution_count="11">
+<div class="cell" data-layout="[[1],[1,1]]" data-execution_count="17">
 <div id="fig-local-rectangle" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-local-rectangle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -617,7 +617,7 @@ Figura&nbsp;5.6: Ajuste de parámetros para la umbralización local
 </figure>
 </div>
 </div>
-<div class="cell" data-layout="[[1],[1,1]]" data-execution_count="12">
+<div class="cell" data-layout="[[1],[1,1]]" data-execution_count="18">
 <div id="fig-local-t" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-local-t-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -672,9 +672,7 @@ Figura&nbsp;5.7: Ajuste de parámetros para la umbralización local
 </section>
 <section id="k-means-clustering" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="k-means-clustering"><span class="header-section-number">5.2</span> K-means clustering</h2>
-<p>La imagen brain1.png corresponde a una resonancia magnética cerebral en escala de grises.</p>
 <p>La <a href="#fig-kmeans-original-histogram" class="quarto-xref">Figura&nbsp;<span>5.8</span></a> muestra la imagen original con su histograma de intensidades, se observa una concentración elevada en las intensidades bajas, asociadas a las regiones oscuras y al fondo de la imagen.</p>
-<p>se muestra el histograma de la imagen para ver como se reparte la intensidad de grises en la imagen.</p>
 <div id="fig-kmeans-original-histogram" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-kmeans-original-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -715,7 +713,7 @@ Figura&nbsp;5.8: Resonancia magnética cerebral
 <p>Al aumentar el número de clusters k=5 y k=7, presenta una mayor variedad de intensidades intermedias y altas. Esto permite visualizar más estructuras del tejido cerebral.</p>
 <p>Para k=12 y k=15 se incorporan nuevos centroides que mejoran la representación de las transiciones entre niveles de gris permitiendo distinguir más detalles de la imagen.</p>
 <p>Los resultados muestran que aumentar el número de clústeres mejora la fidelidad de la imagen segmentada pero aumenta la complejidad de la imagen.</p>
-<div id="cell-fig-kmeans-histogram" class="cell">
+<div id="cell-fig-kmeans-histogram" class="cell" data-execution_count="24">
 <div class="cell-output cell-output-display">
 <div id="fig-kmeans-histogram" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -732,6 +730,7 @@ Figura&nbsp;5.9: Segmentación mediante K-means para distintos números de clús
 </section>
 <section id="segmetación-con-meanshift" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="segmetación-con-meanshift"><span class="header-section-number">5.3</span> Segmetación con MeanShift</h2>
+<div class="{.content-visible=&quot;html&quot;}">
 <p>El algoritmo Mean Shift que nos permite suavizar una imagen conservando los bordes. OpenCV proporciona una implementación de este algoritmo, funciona desplazando de forma iterativa una ventana de búsqueda hacia regiones de mayor densidad en el espacio conjunto de espacio y color. Para ello, se consideran los píxeles que cumplen las siguientes condiciones:</p>
 <p><span class="math display">\[
 \left\{
@@ -751,11 +750,12 @@ Y-\texttt{sp} &amp;\leq y \leq Y+\texttt{sp},\\
 <li><strong>(R,G,B):</strong> representa el color de referencia de la ventana.</li>
 </ul>
 <p>Mediante este proceso, los píxeles con características espaciales y cromáticas similares convergen hacia valores representativos próximos, dando lugar a regiones de color más uniforme.</p>
+</div>
 <p>La <a href="#fig-meanshift-params" class="quarto-xref">Figura&nbsp;<span>5.10</span></a> presenta los resultados de aplicar Mean Shift con diferentes valores de los parámetros sp y sr, con el objetivo de analizar su influencia en el suavizado y la conservación de los detalles.</p>
 <p>En la <a href="#fig-meanshift-params-1" class="quarto-xref">Figura&nbsp;<span>5.10 (a)</span></a> se aumenta el radio espacial, manteniedo el mismo radio de color. Al aumentar el radio espacial, el algoritmo considera vecinos píxeles más alejados favoreciendo la formación de regiones homogéneas más grandes, se reducen detalles pero las estructuras principales permanecen reconocibles.</p>
 <p>En la <a href="#fig-meanshift-params-2" class="quarto-xref">Figura&nbsp;<span>5.10 (b)</span></a> mantiene el radio espacial y se incrementa el radio de color. El aumento del radio de color permite agrupar píxeles con diferencias de color mayores, lo que se traduce en un suavizado más intenso.</p>
-<div class="cell" data-layout-nrows="2" data-execution_count="17">
-<div id="fig-meanshift-params" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="17" data-layout-nrows="2">
+<div class="cell" data-layout-nrows="2" data-execution_count="27">
+<div id="fig-meanshift-params" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="27" data-layout-nrows="2">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-meanshift-params-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display">
@@ -801,7 +801,7 @@ Figura&nbsp;5.11: Pirámide gaussiana. Fuente: Branch y Stewart (2018) <span cla
 </figure>
 </div>
 <p>En la <a href="#fig-meanshift-max-levels" class="quarto-xref">Figura&nbsp;<span>5.12</span></a> se comparan los resultados con distintos niveles de maxLevel. Las tres configuraciones mantienen las principales regiones de color y la estructura general de la escena, las diferencia aparecen principalmente en las zonas con variaciones locales de color y en delimitación de algunas regiones.</p>
-<div id="cell-fig-meanshift-max-levels" class="cell" data-execution_count="18">
+<div id="cell-fig-meanshift-max-levels" class="cell" data-execution_count="28">
 <div class="cell-output cell-output-display">
 <div id="fig-meanshift-max-levels" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -819,7 +819,7 @@ Figura&nbsp;5.12: Resultado de pirámides gaussianas al aplicar mean shift
 <section id="segmentación-watershed" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="segmentación-watershed"><span class="header-section-number">5.4</span> Segmentación Watershed</h2>
 <p>En la figura <a href="#fig-exercise-5-4-1" class="quarto-xref">Figura&nbsp;<span>5.13</span></a> se muestra la segmentación de los lóbulos cerebrales utilizando un umbral de Otsu sobre la imagen suavizada y enmascarada con una elipse que representa la región del cerebro.</p>
-<div id="cell-fig-exercise-5-4-1" class="cell" data-execution_count="360">
+<div id="cell-fig-exercise-5-4-1" class="cell" data-execution_count="30">
 <div class="cell-output cell-output-display">
 <div id="fig-exercise-5-4-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -834,12 +834,11 @@ Figura&nbsp;5.13: Segmentación de los lóbulos cerebrales
 </div>
 </div>
 <p>En la <a href="#fig-exercise-5-4-2-1" class="quarto-xref">Figura&nbsp;<span>5.14 (a)</span></a> se muestran las transformaciones de fondo seguro, primer plano seguro y región desconocida que se utilizan para construir la máscara de regiones segmentadas, <a href="#fig-exercise-5-4-2-2" class="quarto-xref">Figura&nbsp;<span>5.14 (b)</span></a>, que es utilizada como semilla por el algoritmo de watershed.</p>
-<div class="cell" data-layout-nrow="2">
 <div id="fig-exercise-5-4-2" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-exercise-5-4-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
-<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-5-4-2" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-5-4-2" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div id="fig-exercise-5-4-2-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-exercise-5-4-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -851,9 +850,7 @@ Figura&nbsp;5.13: Segmentación de los lóbulos cerebrales
 </figure>
 </div>
 </div>
-</div>
-<div class="quarto-layout-row">
-<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-5-4-2" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-5-4-2" style="flex-basis: 50.0%;justify-content: flex-start;">
 <div id="fig-exercise-5-4-2-2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-exercise-5-4-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -872,9 +869,8 @@ Figura&nbsp;5.14: Transformaciones intermedias
 </figcaption>
 </figure>
 </div>
-</div>
 <p>En la <a href="#fig-exercise-5-4-3" class="quarto-xref">Figura&nbsp;<span>5.15</span></a> se muestra el resultado de la aplicación del algoritmo watershed para la separación de los lóbulos.</p>
-<div id="cell-fig-exercise-5-4-3" class="cell quarto-layout-panel" data-layout-nrow="2" data-execution_count="373">
+<div id="cell-fig-exercise-5-4-3" class="cell quarto-layout-panel" data-layout-nrow="2" data-execution_count="36">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell" style="flex-basis: 100.0%;justify-content: flex-start;">
 <div id="fig-exercise-5-4-3" class="quarto-float quarto-figure quarto-figure-center anchored">

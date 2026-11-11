@@ -426,7 +426,7 @@ div.csl-indent {
 <h2 data-number="1.1" class="anchored" data-anchor-id="ejercicio-1.1"><span class="header-section-number">1.1</span> Ejercicio 1.1</h2>
 <p>La aplicación <strong>image-playground</strong> para realizar procesamiento de imágenes se encuentra desplegada en huggingface <span class="citation" data-cites="huggingface"><a href="references.html#ref-huggingface" role="doc-biblioref">[1]</a></span>: <a href="https://huggingface.co/spaces/vichel0creg0/image-playground">https://huggingface.co/spaces/vichel0creg0/image-playground</a>.</p>
 <p>También puede ejecutarse de forma local utilizando el comando:</p>
-<div id="a97a2d76" class="cell" data-execution_count="5">
+<div id="a97a2d76" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lanza la interfaz UI de la aplicación image-playground de forma local</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>uv run miia<span class="op">-</span>pec1 ui <span class="op">--</span>port <span class="dv">5432</span></span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -502,10 +502,10 @@ Figura&nbsp;1.2: Primer paso del pipeline: Umbralización inversa
 <div aria-describedby="fig-exercise-1-2-pipeline-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-1-2-pipeline-2" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-exercise-1-2-pipeline-2-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-exercise-1-2-pipeline-2-1" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-exercise-1-2-pipeline-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="01-playground-pipeline_files/figure-html/fig-exercise-1-2-pipeline-2-output-1.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-1-2-pipeline-2">
+<img src="01-playground-pipeline_files/figure-html/fig-exercise-1-2-pipeline-2-output-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" data-ref-parent="fig-exercise-1-2-pipeline-2">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-1-2-pipeline-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (a) Antes del filtrado
@@ -514,10 +514,10 @@ Figura&nbsp;1.2: Primer paso del pipeline: Umbralización inversa
 </div>
 </div>
 <div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-1-2-pipeline-2" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-exercise-1-2-pipeline-2-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-exercise-1-2-pipeline-2-2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-exercise-1-2-pipeline-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="01-playground-pipeline_files/figure-html/fig-exercise-1-2-pipeline-2-output-2.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-1-2-pipeline-2">
+<img src="01-playground-pipeline_files/figure-html/fig-exercise-1-2-pipeline-2-output-2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" data-ref-parent="fig-exercise-1-2-pipeline-2">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-1-2-pipeline-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (b) Después del filtrado
@@ -533,7 +533,7 @@ Figura&nbsp;1.3: Componentes conectadas
 </figure>
 </div>
 <p>Finalmente, <a href="#fig-exercise-1-2-pipeline-3" class="quarto-xref">Figura&nbsp;<span>1.4</span></a>, se aplica una dilatación morfológica para aumentar ligeramente el grosor de la los trazos y reforzar las líneas que hayan quedado demasiado finas tras las etapas anteriores.</p>
-<div id="cell-fig-exercise-1-2-pipeline-3" class="cell">
+<div id="cell-fig-exercise-1-2-pipeline-3" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display">
 <div id="fig-exercise-1-2-pipeline-3" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -548,7 +548,7 @@ Figura&nbsp;1.4: Dilatación morfológica, engrosamiento de los trazos de la ima
 </div>
 </div>
 <p>En la <a href="#fig-exercise-1-2-pipeline-end" class="quarto-xref">Figura&nbsp;<span>1.5</span></a>, se presenta una comparación de las imágenes de entrada con los resultados obtenidos en cada etapa de pipeline.</p>
-<div id="cell-fig-exercise-1-2-pipeline-end" class="cell">
+<div id="cell-fig-exercise-1-2-pipeline-end" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display">
 <div id="fig-exercise-1-2-pipeline-end" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">

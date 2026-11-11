@@ -54,21 +54,46 @@ format:
     number-sections: true
     colorlinks: true
     papersize: a4
+    fontsize: 11pt
+    # Sólo valen si se lanza el render con execute que porculea bastante
+    # fig-width: 5
+    # fig-height: 3
+    # fig-align: center
+    # fig-pos: "H"
     geometry:
-      - margin=2.5cm
+      - top=1.5cm
+      - bottom=1cm
+      - left=1.7cm
+      - right=1.7cm
+      - includefoot
+
     include-in-header:
       text: |
         \usepackage{needspace}
         \usepackage{graphicx}
+        \usepackage{fvextra}
+        \usepackage{float}
+        \usepackage[section]{placeins}
+
+        % Reducir el interlineado
+        %\linespread{0.95}
+
+        % Reducir espacios entre párrafos
+        %\setlength{\parskip}{3pt}
+
         % Logo de la UNED en la portada
         \titlehead{%
           \centering
           \includegraphics[width=0.22\textwidth]{assets/logo-uned.jpg}
           \par\vspace{2cm}
         }
+
+        % Posición predeterminada de las figuras LaTeX
+        %\floatplacement{figure}{H}
+
         % Alinear arriba las figuras en páginas de flotantes
         \makeatletter
         \setlength{\@fptop}{0pt}
         \makeatother
-        \usepackage{fvextra}
+
         \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}

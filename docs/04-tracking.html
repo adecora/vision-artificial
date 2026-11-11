@@ -484,7 +484,7 @@ R=\min(\lambda_1,\lambda_2)
 <p>Porque para considerar un región buena como esquina se busca que las dos direcciones presenten variaciones significativas, no sólo una.</p>
 </div>
 </div>
-<div id="cell-fig-shi-tomasi-corner-detection" class="cell">
+<div id="cell-fig-shi-tomasi-corner-detection" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div id="fig-shi-tomasi-corner-detection" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
@@ -534,16 +534,6 @@ Figura&nbsp;4.3: Trayectorias de puntos característicos durante el seguimiento 
 </div>
 </div>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Advertencia
-</div>
-</div>
-<div class="callout-body-container callout-body">
 <p>Una de las principales limitaciones de Lucas-Kanade es que en la regiones uniformes o suavizadas de la imagen, las variaciones espaciales de intensidad son pequeñas y, por tanto, no existe suficiente información para determinar de forma fiable el movimiento. Cuando una región presenta una intensidad prácticamente uniforme:</p>
 <p><span class="math display">\[
 I_x\approx0,\qquad I_y\approx0
@@ -561,8 +551,6 @@ M\approx
 \lambda_1\approx0,\qquad\lambda_2\approx0
 \]</span></p>
 <p>Esto implica que no hay suficiente información para determinar de manera fiable las dos componentes del movimiento.</p>
-</div>
-</div>
 </section>
 <section id="dense-optical-flow" class="level3" data-number="4.1.2">
 <h3 data-number="4.1.2" class="anchored" data-anchor-id="dense-optical-flow"><span class="header-section-number">4.1.2</span> Dense optical flow</h3>
@@ -572,7 +560,7 @@ M\approx
 I_1(x+u,\ y+v) \approx I_0(x,y)
 \]</span></p>
 <p>donde <span class="math inline">\(I_0\)</span> e <span class="math inline">\(I_1\)</span> representan dos fotogramas consecutivos de una secuencia de vídeo.</p>
-<p>El movimiento aparerente entre dos fotogramas se calcula mediante aproximaciones polinómicas de segundo grado. Estas aproximaciones permiten describir las variaciones de intensidad de una región y analizar cómo cambian entre dos fotogramas para determinar su desplazamiento <span class="citation" data-cites="farneback2003twoframe"><a href="references.html#ref-farneback2003twoframe" role="doc-biblioref">[2]</a></span>.</p>
+<p>El movimiento aparente entre dos fotogramas se calcula mediante aproximaciones polinómicas de segundo grado. Estas aproximaciones permiten describir las variaciones de intensidad de una región y analizar cómo cambian entre dos fotogramas para determinar su desplazamiento <span class="citation" data-cites="farneback2003twoframe"><a href="references.html#ref-farneback2003twoframe" role="doc-biblioref">[2]</a></span>.</p>
 <p>En la <a href="#fig-vtest-consecutive-frames" class="quarto-xref">Figura&nbsp;<span>4.4</span></a> se muestran dos fotogramas consecutivos de la secuencia analizada, en ella se observa el desplazamiento de varios peatones.</p>
 <div id="cell-fig-vtest-consecutive-frames" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-display">
@@ -691,7 +679,7 @@ Figura&nbsp;4.6: Visualización flujo óptico
 </section>
 <section id="ejercicio-4.2" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="ejercicio-4.2"><span class="header-section-number">4.2</span> Ejercicio 4.2</h2>
-<p>El algoritmo de <strong>Mean Shift</strong>, situa una ventana alrededr de un punto incial, calcula la media de los puntos contenidos en ella y desplaza la ventana a esa posición, repitiendo el proceso hasta que el desplazamiento es prácticamente nulos permitiendonos localizar zonas de alta densidad como se muestra en la <a href="#fig-mean-shift" class="quarto-xref">Figura&nbsp;<span>4.7</span></a>.</p>
+<p>El algoritmo de <strong>Mean Shift</strong>, sitúa una ventana alrededor de un punto inicial, calcula la media de los puntos contenidos en ella y desplaza la ventana a esa posición, repitiendo el proceso hasta que el desplazamiento es prácticamente nulos permitiéndonos localizar zonas de alta densidad como se muestra en la <a href="#fig-mean-shift" class="quarto-xref">Figura&nbsp;<span>4.7</span></a>.</p>
 <div id="fig-mean-shift" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-mean-shift-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -730,7 +718,12 @@ Figura&nbsp;4.7: Identificación de regiones de alta densidad mediante Mean Shif
 <p>¿Cómo podemos aplicar Mean Shift para realizar el seguimiento de una mano mediante una webcam?</p>
 <p>Para realizar el seguimiento de una mano se parte de una imagen de referencia, captura por la webcam, de la que se selecciona una región de interés (ROI) que contiene la mano.</p>
 <p>Esta región se convierte al espacio de color HSV y se aplica una máscara para seleccionar los píxeles cuyos valores se encuentran dentro de un intervalo determinado. A continuación, se calcula el histograma del canal de tono (H) utilizando los píxeles seleccionados con la máscara y se normalizan los valores entre 0 y 255.</p>
-<p><img src="04-tracking_files/figure-html/30bb56fb-ee46-4351-9993-be7a5f8ab3b5-1-7e59bff8-2f20-4681-b036-086e1e763eea.png" class="img-fluid" style="width:43.0%" alt="Espacio de color HSV"> <img src="04-tracking_files/figure-html/30bb56fb-ee46-4351-9993-be7a5f8ab3b5-2-87acc62e-ea9d-4d32-91ca-a9eddcff714f.png" class="img-fluid" style="width:43.0%" alt="Diagrama del espacio HSV"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="04-tracking_files/figure-html/30bb56fb-ee46-4351-9993-be7a5f8ab3b5-1-7e59bff8-2f20-4681-b036-086e1e763eea.png" class="img-fluid figure-img" style="width:43.0%"></p>
+<figcaption>Espacio de color HSV</figcaption>
+</figure>
+</div>
 <p>En la <a href="#fig-mean-shift-mask" class="quarto-xref">Figura&nbsp;<span>4.8</span></a> se muestra la región de interés, la máscara obtenida y el histograma normalizado que caracteriza los tonos de la mano.</p>
 <div id="fig-mean-shift-mask" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
@@ -824,7 +817,7 @@ Figura&nbsp;4.9: Identificación de regiones con colores similares a los de la m
 <li>El tamaño de la ventana es fijo, no se adapta aunque cambie la escala de la mano.</li>
 <li>Se pierde el foco al salir de plano, se realiza un movimiento brusco hacia la ventana inicial o zonas de tonalidades similares a la mano como la cara.</li>
 </ul>
-<div id="6226a431-845c-4242-991a-e22af365b5db" class="cell" data-execution_count="197">
+<div id="6226a431-845c-4242-991a-e22af365b5db" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Este comando realiza el seguimiento en la webcam de un objeto usando meanshift</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Recibe una imagen de referencia, el área de interés y los valores mínimo y máximo con los que generar la máscara para el seguimiento.</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>uv run miia<span class="op">-</span>pec1 meanshift <span class="op">\</span></span>

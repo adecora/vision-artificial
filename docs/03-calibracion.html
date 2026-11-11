@@ -424,12 +424,12 @@ window.Quarto = {
 <p>Para realizar la calibración de la cámara, he utilizado un patrón de tablero de ajedrez obtenido de las <a href="https://github.com/opencv/opencv/blob/5.x/doc/pattern.png">plantillas que ofrece OpenCV</a>. He impreso el patrón y lo he fijado a una superficie rígida para minimizar posibles deformaciones del papel que pudiesen afectar a la calibración de la cámara.</p>
 <p>Para la captura de la imágenes he implementado un pequeño programa CLI que puede ejecutar con el comando <code>uv run miia-pec1 capture</code>, que permite visualizar en tiempo real las esquinas detectadas para facilitar la captura del tablero en diferentes posiciones y orientaciones generando imágenes válidas para la calibración.</p>
 <p>En <a href="#fig-calib-images" class="quarto-xref">Figura&nbsp;<span>3.1</span></a> se muestran las imágenes seleccionadas para el proceso de calibración.</p>
-<div id="cell-fig-calib-images" class="cell" data-execution_count="29">
+<div id="cell-fig-calib-images" class="cell" data-execution_count="71">
 <div class="cell-output cell-output-display">
-<div id="fig-calib-images" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-calib-images" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-calib-images-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="03-calibracion_files/figure-html/fig-calib-images-output-1.png" class="img-fluid figure-img">
+<img src="03-calibracion_files/figure-html/fig-calib-images-output-1.png" class="img-fluid figure-img" data-fig-pos="H">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-calib-images-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;3.1: Imágenes del patrón de ajedrez utilizadas para la calibración
@@ -438,14 +438,14 @@ Figura&nbsp;3.1: Imágenes del patrón de ajedrez utilizadas para la calibració
 </div>
 </div>
 </div>
-<p>Posteriormente, el comando <code>uv run miia-pec calibrate</code> realiza la calibración de la cámara a partir de las corresponcias entre los puntos del patrón y sus proyecciones en las imágenes, estima los parámetros de la cámara y los coeficientes de distorsión.</p>
+<p>Posteriormente, el comando <code>uv run miia-pec calibrate</code> realiza la calibración de la cámara. A partir de las correspondencias entre los puntos del patrón y sus proyecciones en las imágenes, estima los parámetros de la cámara y los coeficientes de distorsión.</p>
 <p>Como se observa en <a href="#fig-images-corners" class="quarto-xref">Figura&nbsp;<span>3.2</span></a>, el algoritmo identifica las esquinas interiores del tablero de ajedrez, que se utilizan como puntos de referencia para calcular los parámetros de calibración.</p>
-<div id="cell-fig-images-corners" class="cell" data-execution_count="30">
+<div id="cell-fig-images-corners" class="cell" data-execution_count="73">
 <div class="cell-output cell-output-display">
-<div id="fig-images-corners" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-images-corners" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-images-corners-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="03-calibracion_files/figure-html/fig-images-corners-output-1.png" class="img-fluid figure-img">
+<img src="03-calibracion_files/figure-html/fig-images-corners-output-1.png" class="img-fluid figure-img" data-fig-pos="H">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-images-corners-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;3.2: Detección de esquinas interiores del patrón de calibración
@@ -454,7 +454,7 @@ Figura&nbsp;3.2: Detección de esquinas interiores del patrón de calibración
 </div>
 </div>
 </div>
-<p>En <a href="#tbl-calibracion" class="quarto-xref">Tabla&nbsp;<span>3.1</span></a> se muestran los parámetros obtenidos durante la calibración, la matriz intrínseca <span class="math inline">\(\mathbf{K}\)</span> y los coeficientes de distorsión <span class="math inline">\(\mathbf{D}\)</span>.</p>
+<p>En <a href="#tbl-calibracion" class="quarto-xref">Tabla&nbsp;<span>3.1</span></a> se muestran los parámetros obtenidos durante la calibración, la matriz intrínseca <span class="math inline">\(\mathbf{K}\)</span> y los coeficientes de distorsión <span class="math inline">\(\mathbf{D}\)</span></p>
 <p>La matriz intrínseca <span class="math inline">\(\mathbf{K}\)</span> recoge los parámetros que describen la proyección de la cámara. En particular, las distancias focales expresadas en píxeles son <span class="math inline">\(f_x \approx 534.16\)</span> y <span class="math inline">\(f_y \approx 534.25\)</span>, mientras que el punto principal se encuentra en <span class="math inline">\((c_x,c_y)\approx(341.71,232.05)\)</span>.</p>
 <p>El vector de distorsión <span class="math inline">\(\mathbf{D}\)</span> contiene los coeficientes utilizados para modelar las distorsiones radiales y tangenciales de la lente. En el modelo habitual de cinco coeficientes de OpenCV, estos se ordenan como <span class="math inline">\((k_1,k_2,p_1,p_2,k_3)\)</span>.</p>
 <p>Estos parámetros permiten corregir la distorsión de las imágenes y realizar proyecciones geométricas más precisas.</p>
@@ -494,25 +494,13 @@ Tabla&nbsp;3.1: Resultados de la calibración de la cámara
 <p>Tras completar la calibración, se analiza el error de reproyección, que mide la diferencia entres las posiciones de las esquinas detectadas y las estimadas utilizando los parámetros de calibración obtenidos.</p>
 <p>En <a href="#fig-calibration-rms" class="quarto-xref">Figura&nbsp;<span>3.3</span></a> se puede observar el error de calibración para cada imagen, junto con el error de calibración global RMS.</p>
 <p>Los resultados muestran errores relativamente reducidos, con pequeñas diferencias entre las imágenes utilizadas. El error RMS global es aproximadamente de 0,276 píxeles, lo que indica una buena correspondencia entre las observaciones y el model estimado.</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Nota
-</div>
-</div>
-<div class="callout-body-container callout-body">
 <p>Un RMS bajo no garantiza una calibración perfecta, es importante que las imágenes cubran diferentes orientaciones y regiones del sensor.</p>
-</div>
-</div>
-<div id="cell-fig-calibration-rms" class="cell" data-execution_count="32">
+<div id="cell-fig-calibration-rms" class="cell" data-execution_count="75">
 <div class="cell-output cell-output-display">
-<div id="fig-calibration-rms" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-calibration-rms" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-calibration-rms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="03-calibracion_files/figure-html/fig-calibration-rms-output-1.png" class="img-fluid figure-img">
+<img src="03-calibracion_files/figure-html/fig-calibration-rms-output-1.png" class="img-fluid figure-img" data-fig-pos="H">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-calibration-rms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;3.3: Error de reproyección por imagen y RMS global
@@ -530,7 +518,7 @@ Figura&nbsp;3.3: Error de reproyección por imagen y RMS global
 <div id="fig-calibration-remap-compare-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-calibration-remap-compare-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="03-calibracion_files/figure-html/fig-calibration-remap-compare-output-1.png" class="img-fluid figure-img" data-ref-parent="fig-calibration-remap-compare">
+<img src="03-calibracion_files/figure-html/fig-calibration-remap-compare-output-1.png" class="img-fluid figure-img" data-fig-pos="H" data-ref-parent="fig-calibration-remap-compare">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-calibration-remap-compare-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (a) Imagen original
@@ -542,7 +530,7 @@ Figura&nbsp;3.3: Error de reproyección por imagen y RMS global
 <div id="fig-calibration-remap-compare-2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-calibration-remap-compare-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="03-calibracion_files/figure-html/fig-calibration-remap-compare-output-2.png" class="img-fluid figure-img" data-ref-parent="fig-calibration-remap-compare">
+<img src="03-calibracion_files/figure-html/fig-calibration-remap-compare-output-2.png" class="img-fluid figure-img" data-fig-pos="H" data-ref-parent="fig-calibration-remap-compare">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-calibration-remap-compare-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (b) Imagen corregida
@@ -606,16 +594,24 @@ Tabla&nbsp;3.2: Correspondencias entre los puntos 3D del tablero y sus posicione
 </div>
 </figure>
 </div>
+<div class="quarto-layout-panel" data-layout="[55,45]">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<div id="texto-proyeccion-3D" class="quarto-layout-cell" style="flex-basis: 55.0%;justify-content: flex-start;">
 <p>A partir de las correspondencias entre los puntos 3D y 2D, la matriz intrínseca y los coeficientes de distorsión de la cámara, <code>cv.solvePnP()</code> permite estimar la rotación y la traslación del objeto respecto a la cámara. Estos parámetros se calculan buscando que las proyecciones de los puntos 3D se ajusten lo mejor posible a los puntos 2D detectados. Esta transformación se ilustra en la <a href="#fig-image-projection" class="quarto-xref">Figura&nbsp;<span>3.5</span></a>.</p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 45.0%;justify-content: flex-start;">
 <div id="fig-image-projection" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-image-projection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="https://docs.opencv.org/5.0/_images/pinhole_homogeneous_transformation.jpg" class="img-fluid figure-img" style="width:85.0%">
+<img src="https://docs.opencv.org/5.0/_images/pinhole_homogeneous_transformation.jpg" class="img-fluid figure-img" style="width:95.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-image-projection-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;3.5: Sistemas de coordenadas de la cámara y del objeto y proyección de puntos 3D en el plano de imagen. Fuente: OpenCV <span class="citation" data-cites="opencv-solvepnp"><a href="references.html#ref-opencv-solvepnp" role="doc-biblioref">[1]</a></span>.
 </figcaption>
 </figure>
+</div>
+</div>
+</div>
 </div>
 <div id="fig-pose-estimation" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
@@ -648,12 +644,12 @@ Figura&nbsp;3.5: Sistemas de coordenadas de la cámara y del objeto y proyecció
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pose-estimation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;3.6: Estimación de la pos del tablero y visualización mediante elmentos virtuales 3D
+Figura&nbsp;3.6: Estimación de la posición del tablero y visualización mediante elmentos virtuales 3D
 </figcaption>
 </figure>
 </div>
 <p>Este procedimiento podría aplicarse a la cabeza de una persona, sería necesario un modelo facial 3D de referencia junto con el sistema capaz de detectar las posiciones 2D de puntos significativos. A partir de las correspondencias, <code>cv.solvePnP()</code> permitiría estimar la orientación de la cabeza respecto a la cámara, como resume la <a href="#fig-estimated-look" class="quarto-xref">Figura&nbsp;<span>3.7</span></a>.</p>
-<div class="cell" data-fig-width="6" data-layout-align="default">
+<div class="cell" data-fig-width="5" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-estimated-look" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">

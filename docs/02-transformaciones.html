@@ -503,7 +503,7 @@ Figura&nbsp;2.1: Rotar una imagen respecto a su centro
 </div>
 </div>
 </div>
-<div id="7b8dccb7-c903-4f69-becf-56fbf65ff2ca" class="cell" data-execution_count="55">
+<div id="7b8dccb7-c903-4f69-becf-56fbf65ff2ca" class="cell" data-execution_count="7">
 <div id="lst-rotation-matrix" class="python cell-code listing quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-rotation-matrix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -575,7 +575,7 @@ Figura&nbsp;2.2: Rotación
 <p>Para evitar la pérdida de información durante la rotación de una imagen, es necesario ajustar las dimensiones del marco de salida de modo que contenga completamente la imagen transformada <span class="citation" data-cites="rosebrock2017rotate"><a href="references.html#ref-rosebrock2017rotate" role="doc-biblioref">[2]</a></span>.</p>
 <p>Las nuevas dimensiones pueden calcularse a partir de las proyecciones horizontales y verticales de los lados de la imagen original, como se ilustra en <a href="#fig-proyect-dimensions" class="quarto-xref">Figura&nbsp;<span>2.3</span></a>.</p>
 <p>Una vez calculadas estas dimensiones, es necesario situar el centro de la imagen original en el centro del nuevo marco, evitando así que la imagen rotada quede recortada.</p>
-<div id="cell-fig-proyect-dimensions" class="cell" data-execution_count="57">
+<div id="cell-fig-proyect-dimensions" class="cell" data-execution_count="21">
 <div class="cell-output cell-output-display">
 <div id="fig-proyect-dimensions" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -631,13 +631,11 @@ Figura&nbsp;2.4: Escalado y rotación de imágenes con ajuste del marco de salid
 <h3 data-number="2.2.1" class="anchored" data-anchor-id="implementación-de-las-transformaciones-de-forma-individual"><span class="header-section-number">2.2.1</span> Implementación de las transformaciones de forma individual</h3>
 <div class="cell" data-fig-width="6" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-rotate-image-over-center" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rotate-image-over-center-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">---
-title: Rotar una imagen respecto a su centro
----
-flowchart LR
+<pre class="mermaid mermaid-js" data-label="fig-rotate-image-over-center">flowchart LR
     T1["Reescalar 1/4 ambos ejes"]
     T2["Shear -30ª sobre el eje X"]
     T3["Giro 90º (sentido antihorario)"]
@@ -647,7 +645,11 @@ flowchart LR
 
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rotate-image-over-center-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.5: Rotar una imagen respecto a su centro
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -659,7 +661,7 @@ flowchart LR
 <div id="fig-exercise-2-2-1-1-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-exercise-2-2-1-1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="02-transformaciones_files/figure-html/fig-exercise-2-2-1-1-output-1.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-2-2-1-1">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-2-1-1-output-1.png" class="img-fluid figure-img" data-fig-pos="H" data-ref-parent="fig-exercise-2-2-1-1">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-2-2-1-1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (a) Escalado uniforme (1/4)
@@ -671,7 +673,7 @@ flowchart LR
 <div id="fig-exercise-2-2-1-1-2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-exercise-2-2-1-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="02-transformaciones_files/figure-html/fig-exercise-2-2-1-1-output-2.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-2-2-1-1">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-2-1-1-output-2.png" class="img-fluid figure-img" data-fig-pos="H" data-ref-parent="fig-exercise-2-2-1-1">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-2-2-1-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (b) Shear horizontal (-30º)
@@ -683,7 +685,7 @@ flowchart LR
 <div id="fig-exercise-2-2-1-1-3" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-exercise-2-2-1-1-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="02-transformaciones_files/figure-html/fig-exercise-2-2-1-1-output-3.png" class="img-fluid figure-img" data-ref-parent="fig-exercise-2-2-1-1">
+<img src="02-transformaciones_files/figure-html/fig-exercise-2-2-1-1-output-3.png" class="img-fluid figure-img" data-fig-pos="H" data-ref-parent="fig-exercise-2-2-1-1">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-exercise-2-2-1-1-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 (c) Rotación antihoraria (90ª)
@@ -694,7 +696,7 @@ flowchart LR
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exercise-2-2-1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;2.5: Composición de transformaciones afines sobre una imagen
+Figura&nbsp;2.6: Composición de transformaciones afines sobre una imagen
 </figcaption>
 </figure>
 </div>
@@ -739,7 +741,7 @@ Figura&nbsp;2.5: Composición de transformaciones afines sobre una imagen
 \mathbf{x}' = \mathbf{T}_2(\mathbf{T}_1\mathbf{x}) = (\mathbf{T}_2\mathbf{T}_1)\mathbf{x} = \mathbf{T}_C\mathbf{x}
 \]</span></p>
 <p>donde <span class="math inline">\(\mathbf{T}_C=\mathbf{T}_2\mathbf{T}_1\)</span> representa la matriz de transformación compuesta.</p>
-<p>Como se muestra en <a href="#fig-matrix-composition" class="quarto-xref">Figura&nbsp;<span>2.6</span></a>, el orden de aplicación de las transformaciones afecta al resultado final. En el primer caso se aplica una traslación seguida de una rotación, mientras que en el segundo se invierte el orden, obteniéndose posiciones finales diferentes para un mismo punto inicial.</p>
+<p>Como se muestra en <a href="#fig-matrix-composition" class="quarto-xref">Figura&nbsp;<span>2.7</span></a>, el orden de aplicación de las transformaciones afecta al resultado final. En el primer caso se aplica una traslación seguida de una rotación, mientras que en el segundo se invierte el orden, obteniéndose posiciones finales diferentes para un mismo punto inicial.</p>
 <div id="fig-matrix-composition" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-matrix-composition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -771,12 +773,12 @@ Figura&nbsp;2.5: Composición de transformaciones afines sobre una imagen
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-matrix-composition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;2.6: Efecto del orden de aplicación de las transformaciones geométricas
+Figura&nbsp;2.7: Efecto del orden de aplicación de las transformaciones geométricas
 </figcaption>
 </figure>
 </div>
-<p>El resultado de realizar las transformaciones mediante composición de matrices, se muestra en la <a href="#fig-exercise-2-2-1-2-1" class="quarto-xref">Figura&nbsp;<span>2.7 (a)</span></a>, geométricamente el resultado es el mismo. Sin embargo, si observamos el detalle de las intensidades de los píxeles resultantes, en la figura <a href="#fig-exercise-2-2-1-2-2" class="quarto-xref">Figura&nbsp;<span>2.7 (b)</span></a>, no son iguales. Cada transformación sobre la imagen realiza una interpolación, en las transformaciones individuales por tanto se están aplicando tres interpolaciones, por una en el caso de la transformación compuesta.</p>
-<div class="cell" data-layout="[40,60]" data-execution_count="61">
+<p>El resultado de realizar las transformaciones mediante composición de matrices, se muestra en la <a href="#fig-exercise-2-2-1-2-1" class="quarto-xref">Figura&nbsp;<span>2.8 (a)</span></a>, geométricamente el resultado es el mismo. Sin embargo, si observamos el detalle de las intensidades de los píxeles resultantes, en la figura <a href="#fig-exercise-2-2-1-2-2" class="quarto-xref">Figura&nbsp;<span>2.8 (b)</span></a>, no son iguales. Cada transformación sobre la imagen realiza una interpolación, en las transformaciones individuales por tanto se están aplicando tres interpolaciones, por una en el caso de la transformación compuesta.</p>
+<div class="cell" data-layout="[40,60]" data-execution_count="14">
 <div id="fig-exercise-2-2-1-2" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-exercise-2-2-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -808,7 +810,7 @@ Figura&nbsp;2.6: Efecto del orden de aplicación de las transformaciones geomét
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exercise-2-2-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;2.7: Aplicación de transformaciones afines mediante composición de matrices
+Figura&nbsp;2.8: Aplicación de transformaciones afines mediante composición de matrices
 </figcaption>
 </figure>
 </div>
@@ -820,24 +822,32 @@ Figura&nbsp;2.7: Aplicación de transformaciones afines mediante composición de
 \]</span></p>
 <p>donde <span class="math inline">\(f_x(x,y)\)</span> y <span class="math inline">\(f_y(x,y)\)</span> representan las coordenadas de la imagen original correspondientes al píxel <span class="math inline">\((x, y)\)</span> de la imagen destino.</p>
 <p>Estas coordenadas toman valores decimales y, por tanto, no tienen porque tener una correspondencia exacta con un la posición de un píxel de la imagen original. Para estimar la intensidad del píxel de la imagen de salida se aplican diferentes métodos de interpolación.</p>
-<p>La interpolación por el vecino más cercano consiste en asignar a cada píxel de destino el valor del píxel de origen cuya posición sea la más cercana a las coordenada calculadas <span class="citation" data-cites="wikipediaNearestNeighbor"><a href="references.html#ref-wikipediaNearestNeighbor" role="doc-biblioref">[5]</a></span>. Como se muestra en <a href="#fig-interpolation-2D-nearest-neighbor" class="quarto-xref">Figura&nbsp;<span>2.8</span></a>, el valor del punto interpolado se obtiene directamente del píxel más cercano.</p>
+<div class="quarto-layout-panel" data-layout="[55,45]">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<div id="texto-interpolación" class="quarto-layout-cell" style="flex-basis: 55.0%;justify-content: flex-start;">
+<p>La interpolación por el vecino más cercano consiste en asignar a cada píxel de destino el valor del píxel de origen cuya posición sea la más cercana a las coordenada calculadas <span class="citation" data-cites="wikipediaNearestNeighbor"><a href="references.html#ref-wikipediaNearestNeighbor" role="doc-biblioref">[5]</a></span>. Como se muestra en <a href="#fig-interpolation-2D-nearest-neighbor" class="quarto-xref">Figura&nbsp;<span>2.9</span></a>, el valor del punto interpolado se obtiene directamente del píxel más cercano.</p>
+</div>
+<div id="imagen-interpolación" class="quarto-layout-cell" style="flex-basis: 45.0%;justify-content: flex-start;">
 <div id="fig-interpolation-2D-nearest-neighbor" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-interpolation-2D-nearest-neighbor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="02-transformaciones_files/figure-html/00c69077-9130-412d-9174-1493d81c948e-1-a26e5322-201e-424d-9f18-84db34630ae2.png" class="img-fluid figure-img">
+<img src="02-transformaciones_files/figure-html/00c69077-9130-412d-9174-1493d81c948e-1-a26e5322-201e-424d-9f18-84db34630ae2.png" class="img-fluid figure-img" style="width:40.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-interpolation-2D-nearest-neighbor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;2.8: Interpolación 2D del vecino más cercano
+Figura&nbsp;2.9: Interpolación 2D del vecino más cercano
 </figcaption>
 </figure>
+</div>
+</div>
+</div>
 </div>
 <p>Este método de interpolación es computacionalmente poco costoso, no tiene que realizar promedios entre píxeles cercanos, y especialmente útil cuando es importante conservar los valores orginales de los píxeles, por ejemplo si vamos a aplicar máscaras de segmentación es pasos posteriores.</p>
 </section>
 <section id="transformar-la-región-de-interés-roi" class="level3" data-number="2.2.3">
 <h3 data-number="2.2.3" class="anchored" data-anchor-id="transformar-la-región-de-interés-roi"><span class="header-section-number">2.2.3</span> Transformar la región de interés (ROI)</h3>
 <p>Para transformar la <strong>región de interés (ROI)</strong> hasta la posición objetivo, primero es necesario determinar las coordenadas de sus vértices en la imagen original.</p>
-<p>Como se muestra en <a href="#fig-exercise-2-2-2-1" class="quarto-xref">Figura&nbsp;<span>2.9</span></a>, estas coordenadas pueden calcularse a partir de las dimensiones de la región, su orientación y las proyecciones de sus lados sobre los ejes de coordenadas.</p>
-<div id="cell-fig-exercise-2-2-2-1" class="cell" data-execution_count="62">
+<p>Como se muestra en <a href="#fig-exercise-2-2-2-1" class="quarto-xref">Figura&nbsp;<span>2.10</span></a>, estas coordenadas pueden calcularse a partir de las dimensiones de la región, su orientación y las proyecciones de sus lados sobre los ejes de coordenadas.</p>
+<div id="cell-fig-exercise-2-2-2-1" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-display">
 <div id="fig-exercise-2-2-2-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -845,23 +855,21 @@ Figura&nbsp;2.8: Interpolación 2D del vecino más cercano
 <img src="02-transformaciones_files/figure-html/fig-exercise-2-2-2-1-output-1.png" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exercise-2-2-2-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;2.9: Determinación de las coordenadas de los vértices de la región de interes
+Figura&nbsp;2.10: Determinación de las coordenadas de los vértices de la región de interes
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>Tras determinar las coordenadas de los vertices de la región de interés, se propone una secuencia de transformaciones geométricas para situarla en la posición objetivo.</p>
-<p>Como se ilustra en <a href="#fig-exercise-2-2-2-2" class="quarto-xref">Figura&nbsp;<span>2.10</span></a>, el procedimiento consta de tres operaciones: primero se aplica una rotación de 30º en sentido antihorario para alinear la región con los ejes de coordenadas, luego se realiza una traslación para situar el vertice superior izquierdo en el origen y finalmente se aplica un escalado uniforme para reducir sus dimensiones a la mitad.</p>
+<p>Como se ilustra en <a href="#fig-exercise-2-2-2-2" class="quarto-xref">Figura&nbsp;<span>2.12</span></a>, el procedimiento consta de tres operaciones: primero se aplica una rotación de 30º en sentido antihorario para alinear la región con los ejes de coordenadas, luego se realiza una traslación para situar el vertice superior izquierdo en el origen y finalmente se aplica un escalado uniforme para reducir sus dimensiones a la mitad.</p>
 <div class="cell" data-fig-width="6" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-sequence-geometric-transformations" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sequence-geometric-transformations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">---
-title: Secuencia de transformaciones geométricas
----
-flowchart LR
+<pre class="mermaid mermaid-js" data-label="fig-sequence-geometric-transformations">flowchart LR
     T1["Rotación de 30°"]
     T2["Traslación al origen"]
     T3["Escalado uniforme (0,5)"]
@@ -869,7 +877,11 @@ flowchart LR
     T1 --&gt; T2 --&gt; T3
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sequence-geometric-transformations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.11: Secuencia de transformaciones geométricas
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -928,7 +940,7 @@ flowchart LR
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exercise-2-2-2-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;2.10: Secuencia de transformaciones para recolocar la región de interés
+Figura&nbsp;2.12: Secuencia de transformaciones para recolocar la región de interés
 </figcaption>
 </figure>
 </div>
@@ -950,18 +962,18 @@ x' &amp;=
 y' &amp;= y
 \end{aligned}
 \tag{2.1}\]</span></span></p>
-<p>Como se observa en <a href="#fig-exercise-2-3-1" class="quarto-xref">Figura&nbsp;<span>2.11</span></a>, la transformación modifica únicamente las coordenadas horizontales, manteniendo las verticales sin cambios:</p>
+<p>Como se observa en <a href="#fig-exercise-2-3-1" class="quarto-xref">Figura&nbsp;<span>2.13</span></a>, la transformación modifica únicamente las coordenadas horizontales, manteniendo las verticales sin cambios:</p>
 <ul>
 <li>Mitad izquierda: se aplica un factor de escala de <span class="math inline">\(2/3\)</span>, comprimiendo su anchura original de <span class="math inline">\(W/2\)</span> a <span class="math inline">\(W/3\)</span>.</li>
 <li>Mitad derecha: se aplica un factor de escala de <span class="math inline">\(4/3\)</span>, expandiendo su anchura original de <span class="math inline">\(W/2\)</span> a <span class="math inline">\(2W/3\)</span>.</li>
 </ul>
 <p>Finalmente, ambas regiones se combinan para obtener la imagen transformada, conservando la anchura total original <span class="math inline">\(W\)</span> y manteniendo la continuidad en el punto de unión entre las dos mitades.</p>
-<div class="cell" data-layout="[[1,1],[0.7]]" data-layout-valign="center" data-execution_count="64">
+<div class="cell" data-layout="[1,1,1]" data-layout-valign="center" data-execution_count="17">
 <div id="fig-exercise-2-3-1" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-exercise-2-3-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row quarto-layout-valign-center">
-<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-3-1" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-3-1" style="flex-basis: 33.3%;justify-content: flex-start;">
 <div id="fig-exercise-2-3-1-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-exercise-2-3-1-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -973,7 +985,7 @@ y' &amp;= y
 </figure>
 </div>
 </div>
-<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-3-1" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-3-1" style="flex-basis: 33.3%;justify-content: flex-start;">
 <div id="fig-exercise-2-3-1-2" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-exercise-2-3-1-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -985,9 +997,7 @@ y' &amp;= y
 </figure>
 </div>
 </div>
-</div>
-<div class="quarto-layout-row quarto-layout-valign-center">
-<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-3-1" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div class="cell-output cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-exercise-2-3-1" style="flex-basis: 33.3%;justify-content: flex-start;">
 <div id="fig-exercise-2-3-1-3" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
 <div aria-describedby="fig-exercise-2-3-1-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1002,7 +1012,7 @@ y' &amp;= y
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exercise-2-3-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;2.11: Deformación horizontal mediante una transformación lineal por tramos
+Figura&nbsp;2.13: Deformación horizontal mediante una transformación lineal por tramos
 </figcaption>
 </figure>
 </div>
@@ -1010,8 +1020,9 @@ Figura&nbsp;2.11: Deformación horizontal mediante una transformación lineal po
 </section>
 <section id="transformación-no-lineal" class="level3" data-number="2.3.2">
 <h3 data-number="2.3.2" class="anchored" data-anchor-id="transformación-no-lineal"><span class="header-section-number">2.3.2</span> Transformación no lineal</h3>
-<div class="columns" data-layout-valign="center">
-<div class="column" style="width:55%;">
+<div class="quarto-layout-panel" data-layout="[55,45]">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<div id="texto-transformacion" class="quarto-layout-cell" style="flex-basis: 55.0%;justify-content: flex-start;">
 <p>Se considera la siguiente transformación geométrica:</p>
 <p><span id="eq-transformacion-no-lineal"><span class="math display">\[
 \begin{aligned}
@@ -1019,30 +1030,30 @@ y' &amp;= y + 0.4(x - 0.5)^2 - 0.1 \\
 x' &amp;= 2x
 \end{aligned}
 \tag{2.2}\]</span></span></p>
-<p>La transformación <a href="#eq-transformacion-no-lineal" class="quarto-xref">Ecuación&nbsp;<span>2.2</span></a> es <strong>no-lineal</strong>, debido a la dependecia cuadrada de la coordenada <span class="math inline">\(x\)</span>, a diferencia de las trasnformaciones afines esta transformación no conserva las líneas rectas, como se observa en la figura <a href="#fig-transformacion-no-lineal" class="quarto-xref">Figura&nbsp;<span>2.12</span></a>.</p>
-</div><div class="column" style="width:45%;">
+<p>La transformación <a href="#eq-transformacion-no-lineal" class="quarto-xref">Ecuación&nbsp;<span>2.2</span></a> es <strong>no-lineal</strong>, debido a la dependecia cuadrada de la coordenada <span class="math inline">\(x\)</span>, a diferencia de las trasnformaciones afines esta transformación no conserva las líneas rectas, como se observa en la figura <a href="#fig-transformacion-no-lineal" class="quarto-xref">Figura&nbsp;<span>2.14</span></a>.</p>
+</div>
+<div id="imagen-transformacion" class="quarto-layout-cell" style="flex-basis: 45.0%;justify-content: flex-start;">
 <div id="fig-transformacion-no-lineal" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-transformacion-no-lineal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="assets/transformacion-no-lineal.png" class="img-fluid figure-img" style="width:100.0%">
+<img src="assets/transformacion-no-lineal.png" class="img-fluid figure-img" style="width:95.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-transformacion-no-lineal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;2.12: Transformación no lineal
+Figura&nbsp;2.14: Transformación no lineal
 </figcaption>
 </figure>
+</div>
 </div>
 </div>
 </div>
 <p>Aplicamos la tranformación <a href="#eq-transformacion-no-lineal" class="quarto-xref">Ecuación&nbsp;<span>2.2</span></a> a la imagen siguiendo la secuencia:</p>
 <div class="cell" data-fig-width="6" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-sequence-no-lineal-tranformations" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sequence-no-lineal-tranformations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">---
-title: Secuencia de transformaciones no lineales
----
-flowchart LR
+<pre class="mermaid mermaid-js" data-label="fig-sequence-no-lineal-tranformations">flowchart LR
     T1["Marco con los píxeles de destino"]
     T2["(x',y')"]
     T3["(x,y)"]
@@ -1053,23 +1064,23 @@ flowchart LR
     T3 -- "Desnormalizar" --&gt; T4
 </pre>
 </div>
-<p></p></figure><p></p>
 </div>
-</div>
-</div>
-<div id="cell-fig-exercise-2-3-2" class="cell" data-execution_count="66">
-<div class="cell-output cell-output-display">
-<div id="fig-exercise-2-3-2" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-exercise-2-3-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="02-transformaciones_files/figure-html/fig-exercise-2-3-2-output-1.png" class="img-fluid figure-img">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exercise-2-3-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;2.13: Transformación no lineal del tablero de ajedrez
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sequence-no-lineal-tranformations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.15: Secuencia de transformaciones no lineales
 </figcaption>
 </figure>
 </div>
 </div>
+</div>
+<div id="fig-exercise-2-3-2" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-exercise-2-3-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="assets/transformacion-tablero-no-lineal.png" class="img-fluid figure-img" style="width:45.0%" data-fig-pos="H">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exercise-2-3-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2.16: Transformación no lineal del tablero de ajedrez
+</figcaption>
+</figure>
 </div>
 
 
